@@ -74,6 +74,9 @@ dependencies {
     implementation (libs.retrofit)
     implementation (libs.converter.gson)
     implementation (libs.logging.interceptor)
+    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.lifecycle.runtime.compose)
+
 
 }
 kapt {

@@ -190,7 +190,10 @@ fun SignInScreen(navController: NavController, viewModel: SignInViewModel = hilt
                     .fillMaxWidth(),
                 textAlign = TextAlign.Center
             )
-            GroupSocialButtons(color = Color.Black, onFacebookClick = { /*TODO*/ }) {}
+            val context = LocalContext.current
+            GroupSocialButtons(color = Color.Black, onFacebookClick = { /*TODO*/ }) {
+                viewModel.onGoogleSignInClicked(context)
+            }
         }
     }
 }

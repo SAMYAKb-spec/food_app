@@ -1,6 +1,7 @@
 package com.codewithfk.foodhub.data
 
 import com.codewithfk.foodhub.data.models.AuthResponse
+import com.codewithfk.foodhub.data.models.OAuthRequest
 import com.codewithfk.foodhub.data.models.SignInRequest
 import com.codewithfk.foodhub.data.models.SignUpRequest
 import retrofit2.http.Body
@@ -15,4 +16,6 @@ interface FoodApi {
     suspend fun signUp(@Body request: SignUpRequest): AuthResponse
     @POST("/auth/login")
     suspend fun signIn(@Body request: SignInRequest): AuthResponse
+    @POST("/auth/oauth")
+    suspend fun oAuth(@Body request: OAuthRequest): AuthResponse
 }

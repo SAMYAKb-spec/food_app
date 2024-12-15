@@ -84,6 +84,8 @@ dependencies {
     implementation ("androidx.credentials:credentials-play-services-auth:1.3.0")
     implementation ("com.google.android.libraries.identity.googleid:googleid:1.1.1")
 
+    implementation ("com.facebook.android:facebook-login:17.0.0")
+
 }
 kapt {
     correctErrorTypes = true

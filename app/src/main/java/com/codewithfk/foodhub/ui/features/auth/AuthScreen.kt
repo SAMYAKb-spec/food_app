@@ -19,6 +19,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -34,16 +35,20 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.codewithfk.foodhub.R
 import com.codewithfk.foodhub.ui.GroupSocialButtons
+import com.codewithfk.foodhub.ui.features.auth.signup.SignUpViewModel
+import com.codewithfk.foodhub.ui.navigation.Home
 import com.codewithfk.foodhub.ui.navigation.Login
 import com.codewithfk.foodhub.ui.navigation.SignUp
 import com.codewithfk.foodhub.ui.theme.Orange
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
-fun AuthScreen(navController: NavController) {
+fun AuthScreen(navController: NavController, viewModel: AuthScreenViewModel = hiltViewModel()) {
     val imageSize = remember {
         mutableStateOf(IntSize.Zero)
     }
@@ -53,6 +58,24 @@ fun AuthScreen(navController: NavController) {
         ),
         startY = imageSize.value.height.toFloat() / 3,
     )
+    LaunchedEffect(true) {
+        viewModel.navigationEvent.collectLatest { event ->
+            when (event) {
+                is AuthScreenViewModel.AuthNavigationEvent.NavigateToHome -> {
+                    navController.navigate(Home) {
+                        popUpTo(com.codewithfk.foodhub.ui.navigation.AuthScreen) {
+                            inclusive = true
+                        }
+                    }
+                }
+
+                is AuthScreenViewModel.AuthNavigationEvent.NavigateToSignUp -> {
+                    navController.navigate(SignUp)
+                }
+            }
+        }
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -120,8 +143,7 @@ fun AuthScreen(navController: NavController) {
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            GroupSocialButtons(onFacebookClick = { /*TODO*/ }) {
-            }
+            GroupSocialButtons(viewModel = viewModel)
             Spacer(modifier = Modifier.height(16.dp))
             Button(
                 onClick = {

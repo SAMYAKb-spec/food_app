@@ -4,6 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.codewithfk.foodhub.data.FoodApi
 import com.codewithfk.foodhub.data.models.SignUpRequest
+import com.codewithfk.foodhub.ui.features.auth.BaseAuthViewModel
+import com.codewithfk.foodhub.ui.features.auth.login.SignInViewModel.SigInNavigationEvent
+import com.codewithfk.foodhub.ui.features.auth.login.SignInViewModel.SignInEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -14,7 +17,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SignUpViewModel @Inject constructor(val foodApi: FoodApi) : ViewModel() {
+class SignUpViewModel @Inject constructor(override val foodApi: FoodApi) : BaseAuthViewModel(foodApi) {
     private val _uiState = MutableStateFlow<SignupEvent>(SignupEvent.Nothing)
     val uiState = _uiState.asStateFlow()
 
@@ -69,6 +72,31 @@ class SignUpViewModel @Inject constructor(val foodApi: FoodApi) : ViewModel() {
     fun onLoginClicked() {
         viewModelScope.launch {
             _navigationEvent.emit(SigupNavigationEvent.NavigateToLogin)
+        }
+    }
+
+    override fun loading() {
+        viewModelScope.launch {
+            _uiState.value = SignupEvent.Loading
+        }
+    }
+
+    override fun onGoogleError(msg: String) {
+        viewModelScope.launch {
+            _uiState.value = SignupEvent.Error
+        }
+    }
+
+    override fun onFacebookError(msg: String) {
+        viewModelScope.launch {
+            _uiState.value = SignupEvent.Error
+        }
+    }
+
+    override fun onSocialLoginSuccess(token: String) {
+        viewModelScope.launch {
+            _uiState.value = SignupEvent.Success
+            _navigationEvent.emit(SigupNavigationEvent.NavigateToHome)
         }
     }
 

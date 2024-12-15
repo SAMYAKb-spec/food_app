@@ -198,7 +198,7 @@ fun SignUpScreen(navController: NavController, viewModel: SignUpViewModel = hilt
                     .fillMaxWidth(),
                 textAlign = TextAlign.Center
             )
-            GroupSocialButtons(color = Color.Black, onFacebookClick = { /*TODO*/ }) {}
+            GroupSocialButtons(color = Color.Black, viewModel)
         }
     }
 }

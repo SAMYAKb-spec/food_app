@@ -1,5 +1,6 @@
 package com.codewithfk.foodhub.ui.features.auth.login
 
+import androidx.activity.ComponentActivity
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -44,6 +45,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.codewithfk.foodhub.MainActivity
 import com.codewithfk.foodhub.R
 import com.codewithfk.foodhub.ui.FoodHubTextField
 import com.codewithfk.foodhub.ui.GroupSocialButtons
@@ -191,9 +193,10 @@ fun SignInScreen(navController: NavController, viewModel: SignInViewModel = hilt
                 textAlign = TextAlign.Center
             )
             val context = LocalContext.current
-            GroupSocialButtons(color = Color.Black, onFacebookClick = { /*TODO*/ }) {
-                viewModel.onGoogleSignInClicked(context)
-            }
+            GroupSocialButtons(
+                color = Color.Black,
+                viewModel = viewModel,
+            )
         }
     }
 }

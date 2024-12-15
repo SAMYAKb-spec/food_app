@@ -28,9 +28,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.codewithfk.foodhub.data.FoodApi
+import com.codewithfk.foodhub.data.FoodHubSession
 import com.codewithfk.foodhub.ui.features.auth.AuthScreen
 import com.codewithfk.foodhub.ui.features.auth.login.SignInScreen
 import com.codewithfk.foodhub.ui.features.auth.signup.SignUpScreen
+import com.codewithfk.foodhub.ui.features.home.HomeScreen
 import com.codewithfk.foodhub.ui.navigation.AuthScreen
 import com.codewithfk.foodhub.ui.navigation.Home
 import com.codewithfk.foodhub.ui.navigation.Login
@@ -49,6 +51,9 @@ class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var foodApi: FoodApi
+
+    @Inject
+    lateinit var session: FoodHubSession
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen().apply {
             setKeepOnScreenCondition {
@@ -86,10 +91,11 @@ class MainActivity : ComponentActivity() {
         setContent {
             FoodHubAndroidTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+
                     val navController = rememberNavController()
                     NavHost(
                         navController = navController,
-                        startDestination = AuthScreen,
+                        startDestination = if (session.getToken() != null) Home else AuthScreen,
                         modifier = Modifier.padding(innerPadding),
                         enterTransition = {
                             slideIntoContainer(
@@ -122,16 +128,11 @@ class MainActivity : ComponentActivity() {
                         composable<AuthScreen> {
                             AuthScreen(navController)
                         }
-                        composable<Login>  {
+                        composable<Login> {
                             SignInScreen(navController)
                         }
                         composable<Home> {
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .background(Color.Red)
-                            ) {
-                            }
+                            HomeScreen(navController)
                         }
                     }
                 }

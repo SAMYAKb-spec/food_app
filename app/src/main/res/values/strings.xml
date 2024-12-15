@@ -16,7 +16,8 @@
     <string name="email">E-Mail</string>
     <string name="full_name">Full Name</string>
     <string name="sign_in">Sign In</string>
-    <string name="facebook_app_id"></string>
+    <string name="facebook_app_id">564708346538658</string>
     <string name="fb_login_protocol_scheme">fb1234</string>
-    <string name="facebook_client_token"></string>
+    <string name="facebook_client_token">bd7b0ae547629471b56b2fdeefc03ea0</string>
+    <string name="ok">OK</string>
 </resources>

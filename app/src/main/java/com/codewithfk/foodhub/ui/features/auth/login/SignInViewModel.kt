@@ -3,6 +3,8 @@ package com.codewithfk.foodhub.ui.features.auth.login
 import androidx.lifecycle.viewModelScope
 import com.codewithfk.foodhub.data.FoodApi
 import com.codewithfk.foodhub.data.models.SignInRequest
+import com.codewithfk.foodhub.data.remote.ApiResponse
+import com.codewithfk.foodhub.data.remote.safeApiCall
 import com.codewithfk.foodhub.ui.features.auth.BaseAuthViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -40,23 +42,33 @@ class SignInViewModel @Inject constructor(override val foodApi: FoodApi) :
     fun onSignInClick() {
         viewModelScope.launch {
             _uiState.value = SignInEvent.Loading
-            try {
-                val response = foodApi.signIn(
+            val response = safeApiCall {
+                foodApi.signIn(
                     SignInRequest(
                         email = email.value, password = password.value
                     )
                 )
-                if (response.token.isNotEmpty()) {
+            }
+            when (response) {
+                is ApiResponse.Success -> {
                     _uiState.value = SignInEvent.Success
                     _navigationEvent.emit(SigInNavigationEvent.NavigateToHome)
                 }
-            } catch (e: Exception) {
-                e.printStackTrace()
-                _uiState.value = SignInEvent.Error
+
+                else -> {
+                    val errr = (response as? ApiResponse.Error)?.code ?: 0
+                    error = "Sign In Failed"
+                    errorDescription = "Failed to sign up"
+                    when (errr) {
+                        400 -> {
+                            error = "Invalid Credintials"
+                            errorDescription = "Please enter correct details."
+                        }
+                    }
+                    _uiState.value = SignInEvent.Error
+                }
             }
-
         }
-
     }
 
     fun onSignUpClicked() {
@@ -85,12 +97,16 @@ class SignInViewModel @Inject constructor(override val foodApi: FoodApi) :
 
     override fun onGoogleError(msg: String) {
         viewModelScope.launch {
+            errorDescription = msg
+            error = "Google Sign In Failed"
             _uiState.value = SignInEvent.Error
         }
     }
 
     override fun onFacebookError(msg: String) {
         viewModelScope.launch {
+            errorDescription = msg
+            error = "Facebook Sign In Failed"
             _uiState.value = SignInEvent.Error
         }
     }

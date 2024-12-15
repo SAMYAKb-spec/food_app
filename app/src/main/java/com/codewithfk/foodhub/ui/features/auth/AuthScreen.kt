@@ -16,11 +16,18 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -34,11 +41,26 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.codewithfk.foodhub.R
+import com.codewithfk.foodhub.ui.BasicDialog
+import com.codewithfk.foodhub.ui.GroupSocialButtons
+import com.codewithfk.foodhub.ui.features.auth.signup.SignUpViewModel
+import com.codewithfk.foodhub.ui.navigation.Home
+import com.codewithfk.foodhub.ui.navigation.Login
+import com.codewithfk.foodhub.ui.navigation.SignUp
 import com.codewithfk.foodhub.ui.theme.Orange
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AuthScreen() {
+fun AuthScreen(navController: NavController, viewModel: AuthScreenViewModel = hiltViewModel()) {
+    val sheetState = rememberModalBottomSheetState()
+    val scope = rememberCoroutineScope()
+    var showDialog by remember { mutableStateOf(false) }
     val imageSize = remember {
         mutableStateOf(IntSize.Zero)
     }
@@ -48,6 +70,28 @@ fun AuthScreen() {
         ),
         startY = imageSize.value.height.toFloat() / 3,
     )
+    LaunchedEffect(true) {
+        viewModel.navigationEvent.collectLatest { event ->
+            when (event) {
+                is AuthScreenViewModel.AuthNavigationEvent.NavigateToHome -> {
+                    navController.navigate(Home) {
+                        popUpTo(com.codewithfk.foodhub.ui.navigation.AuthScreen) {
+                            inclusive = true
+                        }
+                    }
+                }
+
+                is AuthScreenViewModel.AuthNavigationEvent.NavigateToSignUp -> {
+                    navController.navigate(SignUp)
+                }
+
+                is AuthScreenViewModel.AuthNavigationEvent.ShowErrorDialog -> {
+                    showDialog = true
+                }
+            }
+        }
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -115,57 +159,12 @@ fun AuthScreen() {
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = stringResource(id = R.string.sign_in_title), color = Color.White)
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Button(
-                    onClick = { /*TODO*/ },
-                    colors = ButtonDefaults.buttonColors(containerColor = Color.White),
-                    shape = RoundedCornerShape(32.dp),
-                ) {
-                    Row(
-                        modifier = Modifier.height(38.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.ic_facebook),
-                            contentDescription = null,
-                            modifier = Modifier.size(24.dp)
-                        )
-                        Spacer(modifier = Modifier.size(8.dp))
-                        Text(
-                            text = stringResource(id = R.string.sign_with_facebook),
-                            color = Color.Black
-                        )
-                    }
-                }
-                Button(
-                    onClick = { /*TODO*/ },
-                    colors = ButtonDefaults.buttonColors(containerColor = Color.White),
-                    shape = RoundedCornerShape(32.dp),
-                ) {
-                    Row(
-                        modifier = Modifier.height(38.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.ic_google),
-                            contentDescription = null,
-                            modifier = Modifier.size(24.dp)
-                        )
-                        Spacer(modifier = Modifier.size(8.dp))
-                        Text(
-                            text = stringResource(id = R.string.sign_with_google),
-                            color = Color.Black
-                        )
-                    }
-                }
-            }
+            GroupSocialButtons(viewModel = viewModel)
             Spacer(modifier = Modifier.height(16.dp))
             Button(
-                onClick = { /*TODO*/ },
+                onClick = {
+                    navController.navigate(SignUp)
+                },
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(containerColor = Color.Gray.copy(alpha = 0.2f)),
                 shape = RoundedCornerShape(32.dp),
@@ -174,9 +173,27 @@ fun AuthScreen() {
                 Text(text = stringResource(id = R.string.sign_with_email), color = Color.White)
             }
 
-            TextButton(onClick = { /*TODO*/ }) {
+            TextButton(onClick = {
+                navController.navigate(Login)
+            }) {
                 Text(text = stringResource(id = R.string.alread_have_account), color = Color.White)
             }
+        }
+
+    }
+
+    if (showDialog) {
+        ModalBottomSheet(onDismissRequest = { showDialog = false }, sheetState = sheetState) {
+            BasicDialog(
+                title = viewModel.error,
+                description = viewModel.errorDescription,
+                onClick = {
+                    scope.launch {
+                        sheetState.hide()
+                        showDialog = false
+                    }
+                }
+            )
         }
     }
 }
@@ -185,5 +202,5 @@ fun AuthScreen() {
 @Preview(showBackground = true)
 @Composable
 fun AuthScreenPreview() {
-    AuthScreen()
+    AuthScreen(rememberNavController())
 }

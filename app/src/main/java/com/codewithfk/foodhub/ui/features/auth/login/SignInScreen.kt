@@ -21,13 +21,17 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -47,24 +51,36 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.codewithfk.foodhub.MainActivity
 import com.codewithfk.foodhub.R
+import com.codewithfk.foodhub.ui.BasicDialog
 import com.codewithfk.foodhub.ui.FoodHubTextField
 import com.codewithfk.foodhub.ui.GroupSocialButtons
 import com.codewithfk.foodhub.ui.navigation.AuthScreen
 import com.codewithfk.foodhub.ui.navigation.Home
-import com.codewithfk.foodhub.ui.navigation.Login
 import com.codewithfk.foodhub.ui.navigation.SignUp
 import com.codewithfk.foodhub.ui.theme.Orange
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignInScreen(navController: NavController, viewModel: SignInViewModel = hiltViewModel()) {
+    val email = viewModel.email.collectAsStateWithLifecycle()
+    val password = viewModel.password.collectAsStateWithLifecycle()
+    val errorMessage = remember { mutableStateOf<String?>(null) }
+    val loading = remember { mutableStateOf(false) }
+    val sheetState = rememberModalBottomSheetState()
+    val scope = rememberCoroutineScope()
+    var showDialog by remember { mutableStateOf(false) }
+    LaunchedEffect(errorMessage.value) {
+        if (errorMessage.value != null)
+            scope.launch {
+                showDialog = true
+            }
+    }
+
     Box(modifier = Modifier.fillMaxSize()) {
 
-        val email = viewModel.email.collectAsStateWithLifecycle()
-        val password = viewModel.password.collectAsStateWithLifecycle()
-        val errorMessage = remember { mutableStateOf<String?>(null) }
-        val loading = remember { mutableStateOf(false) }
 
         val uiState = viewModel.uiState.collectAsState()
         when (uiState.value) {
@@ -196,6 +212,20 @@ fun SignInScreen(navController: NavController, viewModel: SignInViewModel = hilt
             GroupSocialButtons(
                 color = Color.Black,
                 viewModel = viewModel,
+            )
+        }
+    }
+    if (showDialog) {
+        ModalBottomSheet(onDismissRequest = { showDialog = false }, sheetState = sheetState) {
+            BasicDialog(
+                title = viewModel.error,
+                description = viewModel.errorDescription,
+                onClick = {
+                    scope.launch {
+                        sheetState.hide()
+                        showDialog = false
+                    }
+                }
             )
         }
     }

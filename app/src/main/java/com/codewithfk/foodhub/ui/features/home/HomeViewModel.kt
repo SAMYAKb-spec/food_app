@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.codewithfk.foodhub.data.FoodApi
 import com.codewithfk.foodhub.data.models.Category
+import com.codewithfk.foodhub.data.models.Restaurant
 import com.codewithfk.foodhub.data.remote.safeApiCall
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -24,36 +25,55 @@ class HomeViewModel @Inject constructor(private val foodApi: FoodApi) : ViewMode
     val navigationEvent = _navigationEvent.asSharedFlow()
 
     var categories = emptyList<Category>()
+    var restaurants = emptyList<Restaurant>()
 
     init {
-        getCategories()
-        getPopularRestaurants()
-    }
-
-    fun getCategories() {
         viewModelScope.launch {
-            val response = safeApiCall {
-                foodApi.getCategories()
-            }
-            when (response) {
-                is com.codewithfk.foodhub.data.remote.ApiResponse.Success -> {
-                    categories = response.data.data
-                    _uiState.value = HomeScreenState.Success
-                }
+            categories = getCategories()
+            restaurants = getPopularRestaurants()
 
-                is com.codewithfk.foodhub.data.remote.ApiResponse.Error -> {
-                    _uiState.value = HomeScreenState.Empty
-                }
-
-                else -> {
-                    _uiState.value = HomeScreenState.Empty
-                }
+            if (categories.isNotEmpty() && restaurants.isNotEmpty()) {
+                _uiState.value = HomeScreenState.Success
+            } else {
+                _uiState.value = HomeScreenState.Empty
             }
         }
+
     }
 
-    fun getPopularRestaurants() {
+    private suspend fun getCategories(): List<Category> {
 
+        var list = emptyList<Category>()
+        val response = safeApiCall {
+            foodApi.getCategories()
+        }
+        when (response) {
+            is com.codewithfk.foodhub.data.remote.ApiResponse.Success -> {
+                list = response.data.data
+            }
+
+            else -> {
+            }
+        }
+        return list
+
+    }
+
+    private suspend fun getPopularRestaurants(): List<Restaurant> {
+        var list = emptyList<Restaurant>()
+        val response = safeApiCall {
+            foodApi.getRestaurants(40.7128, -74.0060)
+        }
+        when (response) {
+            is com.codewithfk.foodhub.data.remote.ApiResponse.Success -> {
+                list = response.data.data
+
+            }
+
+            else -> {
+            }
+        }
+        return list
     }
 
     sealed class HomeScreenState {

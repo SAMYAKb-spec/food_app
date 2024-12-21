@@ -1,5 +1,8 @@
 package com.codewithfk.foodhub.ui.features.home
 
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -22,6 +25,7 @@ import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
@@ -41,11 +45,34 @@ import coil3.compose.AsyncImage
 import com.codewithfk.foodhub.R
 import com.codewithfk.foodhub.data.models.Category
 import com.codewithfk.foodhub.data.models.Restaurant
+import com.codewithfk.foodhub.ui.navigation.RestaurantDetails
 import com.codewithfk.foodhub.ui.theme.Orange
 import com.codewithfk.foodhub.ui.theme.Typography
+import kotlinx.coroutines.flow.collectLatest
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun HomeScreen(navController: NavController, viewModel: HomeViewModel = hiltViewModel()) {
+fun SharedTransitionScope.HomeScreen(
+    navController: NavController,
+    animatedVisibilityScope: AnimatedVisibilityScope,
+    viewModel: HomeViewModel = hiltViewModel(),
+) {
+
+    LaunchedEffect(Unit) {
+        viewModel.navigationEvent.collectLatest {
+            when (it) {
+                is HomeViewModel.HomeScreenNavigationEvents.NavigateToDetail -> {
+                    navController.navigate(RestaurantDetails(it.id, it.name, it.imageUrl))
+                }
+
+                else -> {
+
+                }
+            }
+        }
+    }
+
+
     Column(modifier = Modifier.fillMaxSize()) {
         val uiState = viewModel.uiState.collectAsState()
         when (uiState.value) {
@@ -61,9 +88,12 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel = hiltView
                 val categories = viewModel.categories
                 CategoriesList(categories = categories, onCategorySelected = {})
 
-                RestaurantList(restaurants = viewModel.restaurants, onRestaurantSelected = {
-
-                })
+                RestaurantList(
+                    restaurants = viewModel.restaurants,
+                    animatedVisibilityScope,
+                    onRestaurantSelected = {
+                        viewModel.onRestaurantSelected(it)
+                    })
             }
         }
     }
@@ -80,8 +110,13 @@ fun CategoriesList(categories: List<Category>, onCategorySelected: (Category) ->
 }
 
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun RestaurantList(restaurants: List<Restaurant>, onRestaurantSelected: (Restaurant) -> Unit) {
+fun SharedTransitionScope.RestaurantList(
+    restaurants: List<Restaurant>,
+    animatedVisibilityScope: AnimatedVisibilityScope,
+    onRestaurantSelected: (Restaurant) -> Unit
+) {
     Column {
         Row {
             Text(
@@ -97,13 +132,18 @@ fun RestaurantList(restaurants: List<Restaurant>, onRestaurantSelected: (Restaur
     }
     LazyRow {
         items(restaurants) {
-            RestaurantItem(it, onRestaurantSelected)
+            RestaurantItem(it, animatedVisibilityScope, onRestaurantSelected)
         }
     }
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun RestaurantItem(restaurant: Restaurant, onRestaurantSelected: (Restaurant) -> Unit) {
+fun SharedTransitionScope.RestaurantItem(
+    restaurant: Restaurant,
+    animatedVisibilityScope: AnimatedVisibilityScope,
+    onRestaurantSelected: (Restaurant) -> Unit
+) {
     Box(
         modifier = Modifier
             .padding(8.dp)
@@ -111,7 +151,9 @@ fun RestaurantItem(restaurant: Restaurant, onRestaurantSelected: (Restaurant) ->
             .height(229.dp)
             .shadow(16.dp, shape = RoundedCornerShape(16.dp))
             .background(Color.White)
+            .clickable { onRestaurantSelected(restaurant) }
             .clip(RoundedCornerShape(16.dp))
+
 
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
@@ -120,7 +162,11 @@ fun RestaurantItem(restaurant: Restaurant, onRestaurantSelected: (Restaurant) ->
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxSize()
-                    .weight(1f),
+                    .weight(1f)
+                    .sharedElement(
+                        state = rememberSharedContentState(key = "image/${restaurant.id}"),
+                        animatedVisibilityScope = animatedVisibilityScope
+                    ),
                 contentScale = androidx.compose.ui.layout.ContentScale.Crop
             )
 
@@ -131,7 +177,11 @@ fun RestaurantItem(restaurant: Restaurant, onRestaurantSelected: (Restaurant) ->
                 Text(
                     text = restaurant.name,
                     style = Typography.titleMedium,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.sharedElement(
+                        state = rememberSharedContentState(key = "title/${restaurant.id}"),
+                        animatedVisibilityScope = animatedVisibilityScope
+                    )
                 )
                 Row() {
                     Row(
@@ -147,9 +197,7 @@ fun RestaurantItem(restaurant: Restaurant, onRestaurantSelected: (Restaurant) ->
                                 .size(12.dp)
                         )
                         Text(
-                            text = "Free Delivery",
-                            style = Typography.bodySmall,
-                            color = Color.Gray
+                            text = "Free Delivery", style = Typography.bodySmall, color = Color.Gray
                         )
                     }
                     Spacer(modifier = Modifier.size(8.dp))
@@ -166,9 +214,7 @@ fun RestaurantItem(restaurant: Restaurant, onRestaurantSelected: (Restaurant) ->
                                 .size(12.dp)
                         )
                         Text(
-                            text = "Free Delivery",
-                            style = Typography.bodySmall,
-                            color = Color.Gray
+                            text = "Free Delivery", style = Typography.bodySmall, color = Color.Gray
                         )
                     }
                 }

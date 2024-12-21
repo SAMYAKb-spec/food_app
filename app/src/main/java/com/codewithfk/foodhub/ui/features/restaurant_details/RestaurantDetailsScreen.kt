@@ -5,6 +5,7 @@ import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -51,6 +52,7 @@ import com.codewithfk.foodhub.R
 import com.codewithfk.foodhub.data.models.FoodItem
 import com.codewithfk.foodhub.data.models.Restaurant
 import com.codewithfk.foodhub.ui.gridItems
+import com.codewithfk.foodhub.ui.navigation.FoodDetails
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
@@ -101,7 +103,11 @@ fun SharedTransitionScope.RestaurantDetailsScreen(
                     (uiState.value as RestaurantViewModel.RestaurantEvent.Success).foodItems
                 if (foodItems.isNotEmpty()) {
                     gridItems(foodItems, 2) { foodItem ->
-                        FoodItemView(footItem = foodItem)
+                        FoodItemView(footItem = foodItem, animatedVisibilityScope) {
+                            navController.navigate(
+                                FoodDetails(foodItem)
+                            )
+                        }
                     }
                 } else {
                     item {
@@ -225,8 +231,13 @@ fun SharedTransitionScope.RestaurantDetailsHeader(
     }
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun FoodItemView(footItem: FoodItem) {
+fun SharedTransitionScope.FoodItemView(
+    footItem: FoodItem,
+    animatedVisibilityScope: AnimatedVisibilityScope,
+    onClick: (FoodItem) -> Unit
+) {
     Column(
         modifier = Modifier
             .padding(8.dp)
@@ -239,6 +250,7 @@ fun FoodItemView(footItem: FoodItem) {
                 spotColor = Color.Gray.copy(alpha = 0.8f)
             )
             .background(Color.White)
+            .clickable { onClick.invoke(footItem) }
             .clip(RoundedCornerShape(16.dp))
     ) {
         Box(
@@ -250,7 +262,11 @@ fun FoodItemView(footItem: FoodItem) {
                 model = footItem.imageUrl, contentDescription = null,
                 modifier = Modifier
                     .fillMaxSize()
-                    .clip(RoundedCornerShape(16.dp)),
+                    .clip(RoundedCornerShape(16.dp))
+                    .sharedElement(
+                        state = rememberSharedContentState(key = "image/${footItem.id}"),
+                        animatedVisibilityScope
+                    ),
                 contentScale = ContentScale.Crop,
             )
             Text(
@@ -306,7 +322,11 @@ fun FoodItemView(footItem: FoodItem) {
                 .fillMaxWidth()
         ) {
             Text(
-                text = footItem.name, style = MaterialTheme.typography.bodyMedium, maxLines = 1
+                text = footItem.name, style = MaterialTheme.typography.bodyMedium, maxLines = 1,
+                modifier = Modifier.sharedElement(
+                    state = rememberSharedContentState(key = "title/${footItem.id}"),
+                    animatedVisibilityScope
+                )
             )
             Text(
                 text = "${footItem.description}",

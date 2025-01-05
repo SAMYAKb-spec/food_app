@@ -36,10 +36,12 @@ import com.codewithfk.foodhub.data.models.FoodItem
 import com.codewithfk.foodhub.ui.features.auth.AuthScreen
 import com.codewithfk.foodhub.ui.features.auth.login.SignInScreen
 import com.codewithfk.foodhub.ui.features.auth.signup.SignUpScreen
+import com.codewithfk.foodhub.ui.features.cart.CartScreen
 import com.codewithfk.foodhub.ui.features.food_item_details.FoodDetailsScreen
 import com.codewithfk.foodhub.ui.features.home.HomeScreen
 import com.codewithfk.foodhub.ui.features.restaurant_details.RestaurantDetailsScreen
 import com.codewithfk.foodhub.ui.navigation.AuthScreen
+import com.codewithfk.foodhub.ui.navigation.Cart
 import com.codewithfk.foodhub.ui.navigation.FoodDetails
 import com.codewithfk.foodhub.ui.navigation.Home
 import com.codewithfk.foodhub.ui.navigation.Login
@@ -166,6 +168,10 @@ class MainActivity : ComponentActivity() {
                                     foodItem = route.foodItem,
                                     this
                                 )
+                            }
+
+                            composable<Cart>() {
+                                CartScreen(navController)
                             }
                         }
                     }

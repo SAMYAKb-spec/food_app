@@ -1,15 +1,22 @@
 package com.codewithfk.foodhub.data
 
+import com.codewithfk.foodhub.data.models.AddToCartRequest
+import com.codewithfk.foodhub.data.models.AddToCartResponse
 import com.codewithfk.foodhub.data.models.AuthResponse
+import com.codewithfk.foodhub.data.models.CartResponse
 import com.codewithfk.foodhub.data.models.CategoriesResponse
 import com.codewithfk.foodhub.data.models.FoodItemResponse
+import com.codewithfk.foodhub.data.models.GenericMsgResponse
 import com.codewithfk.foodhub.data.models.OAuthRequest
 import com.codewithfk.foodhub.data.models.ResturauntsResponse
 import com.codewithfk.foodhub.data.models.SignInRequest
 import com.codewithfk.foodhub.data.models.SignUpRequest
+import com.codewithfk.foodhub.data.models.UpdateCartItemRequest
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -35,4 +42,18 @@ interface FoodApi {
 
     @GET("/restaurants/{restaurantId}/menu")
     suspend fun getFoodItemForRestaurant(@Path("restaurantId") restaurantId: String): Response<FoodItemResponse>
+
+    @POST("/cart")
+    suspend fun addToCart(@Body request: AddToCartRequest): Response<AddToCartResponse>
+
+    @GET("/cart")
+    suspend fun getCart(): Response<CartResponse>
+
+    @PATCH("/cart")
+    suspend fun updateCart(@Body request: UpdateCartItemRequest): Response<GenericMsgResponse>
+
+    @DELETE("/cart/{cartItemId}")
+    suspend fun deleteCartItem(@Path("cartItemId") cartItemId: String): Response<GenericMsgResponse>
+
+
 }

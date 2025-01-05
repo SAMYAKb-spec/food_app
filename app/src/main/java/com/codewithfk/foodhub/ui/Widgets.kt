@@ -158,7 +158,6 @@ fun BasicDialog(title: String, description: String, onClick: () -> Unit) {
             }
         }
     }
-
 }
 
 

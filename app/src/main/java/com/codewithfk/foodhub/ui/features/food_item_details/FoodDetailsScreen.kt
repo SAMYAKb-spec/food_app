@@ -50,6 +50,7 @@ fun SharedTransitionScope.FoodDetailsScreen(
     navController: NavController,
     foodItem: FoodItem,
     animatedVisibilityScope: AnimatedVisibilityScope,
+    onItemAddedToCart: () -> Unit,
     viewModel: FoodDetailsViewModel = hiltViewModel()
 ) {
 
@@ -79,6 +80,7 @@ fun SharedTransitionScope.FoodDetailsScreen(
             when (it) {
                 is FoodDetailsViewModel.FoodDetailsEvent.onAddToCart -> {
                     showSuccessDialog.value = true
+                    onItemAddedToCart()
                 }
 
                 is FoodDetailsViewModel.FoodDetailsEvent.showErrorDialog -> {

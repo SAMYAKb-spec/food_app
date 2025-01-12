@@ -48,7 +48,7 @@ import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CartScreen(navController: NavController, viewModel: CartViewModel = hiltViewModel()) {
+fun CartScreen(navController: NavController, viewModel: CartViewModel) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
     val showErrorDialog = remember {
         mutableStateOf(
@@ -88,18 +88,37 @@ fun CartScreen(navController: NavController, viewModel: CartViewModel = hiltView
 
             is CartViewModel.CartUiState.Success -> {
                 val data = (uiState.value as CartViewModel.CartUiState.Success).data
-                LazyColumn {
-                    items(data.items) { it ->
-                        CartItemView(cartItem = it, onIncrement = { cartItem, _ ->
-                            viewModel.incrementQuantity(cartItem)
-                        }, onDecrement = { cartItem, _ ->
-                            viewModel.decrementQuantity(cartItem)
-                        }, onRemove = {
-                            viewModel.removeItem(it)
-                        })
+                if (data.items.size > 0) {
+                    LazyColumn {
+                        items(data.items) { it ->
+                            CartItemView(cartItem = it, onIncrement = { cartItem, _ ->
+                                viewModel.incrementQuantity(cartItem)
+                            }, onDecrement = { cartItem, _ ->
+                                viewModel.decrementQuantity(cartItem)
+                            }, onRemove = {
+                                viewModel.removeItem(it)
+                            })
+                        }
+                        item {
+                            CheckoutDetailsView(data.checkoutDetails)
+                        }
                     }
-                    item {
-                        CheckoutDetailsView(data.checkoutDetails)
+                } else {
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_cart),
+                            contentDescription = null,
+                            tint = Color.Gray
+                        )
+                        Text(
+                            text = "No items in cart",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = Color.Gray
+                        )
                     }
                 }
             }

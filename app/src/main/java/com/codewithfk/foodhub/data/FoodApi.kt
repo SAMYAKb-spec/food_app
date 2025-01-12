@@ -2,6 +2,7 @@ package com.codewithfk.foodhub.data
 
 import com.codewithfk.foodhub.data.models.AddToCartRequest
 import com.codewithfk.foodhub.data.models.AddToCartResponse
+import com.codewithfk.foodhub.data.models.Address
 import com.codewithfk.foodhub.data.models.AddressListResponse
 import com.codewithfk.foodhub.data.models.AuthResponse
 import com.codewithfk.foodhub.data.models.CartResponse
@@ -10,6 +11,7 @@ import com.codewithfk.foodhub.data.models.FoodItemResponse
 import com.codewithfk.foodhub.data.models.GenericMsgResponse
 import com.codewithfk.foodhub.data.models.OAuthRequest
 import com.codewithfk.foodhub.data.models.ResturauntsResponse
+import com.codewithfk.foodhub.data.models.ReverseGeoCodeRequest
 import com.codewithfk.foodhub.data.models.SignInRequest
 import com.codewithfk.foodhub.data.models.SignUpRequest
 import com.codewithfk.foodhub.data.models.UpdateCartItemRequest
@@ -58,4 +60,10 @@ interface FoodApi {
 
     @GET("/addresses")
     suspend fun getUserAddress(): Response<AddressListResponse>
+
+    @POST("/addresses/reverse-geocode")
+    suspend fun reverseGeocode(@Body request: ReverseGeoCodeRequest): Response<Address>
+
+    @POST("/addresses")
+    suspend fun storeAddress(@Body address: Address): Response<GenericMsgResponse>
 }

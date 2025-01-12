@@ -61,6 +61,19 @@ fun CartScreen(navController: NavController, viewModel: CartViewModel) {
             false
         )
     }
+    val address =
+        navController.currentBackStackEntry?.savedStateHandle?.getStateFlow<Address?>(
+            "address",
+            null
+        )
+            ?.collectAsStateWithLifecycle()
+
+    LaunchedEffect(key1 = address?.value) {
+        address?.value?.let {
+            viewModel.onAddressSelected(it)
+        }
+
+    }
     LaunchedEffect(key1 = true) {
         viewModel.event.collectLatest {
             when (it) {
@@ -151,13 +164,17 @@ fun CartScreen(navController: NavController, viewModel: CartViewModel) {
 
             CartViewModel.CartUiState.Nothing -> {}
         }
-
+        val selectedAddress = viewModel.selectedAddress.collectAsStateWithLifecycle()
         Spacer(modifier = Modifier.weight(1f))
         if (uiState.value is CartViewModel.CartUiState.Success) {
-            AddressCard(null, {
+            AddressCard(selectedAddress.value) {
                 viewModel.onAddressClicked()
-            })
-            Button(onClick = { viewModel.checkout() }, modifier = Modifier.fillMaxWidth()) {
+            }
+            Button(
+                onClick = { viewModel.checkout() },
+                modifier = Modifier.fillMaxWidth(),
+                enabled = selectedAddress.value != null
+            ) {
                 Text(text = "Checkout")
             }
         }

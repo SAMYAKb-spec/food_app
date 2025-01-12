@@ -3,6 +3,7 @@ package com.codewithfk.foodhub.ui.features.cart
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.codewithfk.foodhub.data.FoodApi
+import com.codewithfk.foodhub.data.models.Address
 import com.codewithfk.foodhub.data.models.CartItem
 import com.codewithfk.foodhub.data.models.CartResponse
 import com.codewithfk.foodhub.data.models.UpdateCartItemRequest
@@ -28,6 +29,9 @@ class CartViewModel @Inject constructor(val foodApi: FoodApi) : ViewModel() {
     private var cartResponse: CartResponse? = null
     private val _cartItemCount = MutableStateFlow(0)
     val cartItemCount = _cartItemCount.asStateFlow()
+
+    private val address = MutableStateFlow<Address?>(null)
+    val selectedAddress = address.asStateFlow()
 
     init {
         getCart()
@@ -122,6 +126,10 @@ class CartViewModel @Inject constructor(val foodApi: FoodApi) : ViewModel() {
         viewModelScope.launch {
             _event.emit(CartEvent.onAddressClicked)
         }
+    }
+
+    fun onAddressSelected(it: Address) {
+        address.value = it
     }
 
     sealed class CartUiState {

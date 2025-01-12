@@ -87,6 +87,8 @@ dependencies {
     implementation ("com.facebook.android:facebook-login:17.0.0")
     implementation("io.coil-kt.coil3:coil-compose:3.0.4")
     implementation("io.coil-kt.coil3:coil-network-okhttp:3.0.4")
+    implementation("com.google.maps.android:maps-compose:6.1.1")
+
 
 }
 kapt {

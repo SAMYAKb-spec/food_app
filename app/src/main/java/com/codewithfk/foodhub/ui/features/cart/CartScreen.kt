@@ -2,7 +2,10 @@ package com.codewithfk.foodhub.ui.features.cart
 
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -31,6 +34,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -39,10 +43,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import coil3.compose.AsyncImage
 import com.codewithfk.foodhub.R
+import com.codewithfk.foodhub.data.models.Address
 import com.codewithfk.foodhub.data.models.CartItem
 import com.codewithfk.foodhub.data.models.CheckoutDetails
 import com.codewithfk.foodhub.ui.BasicDialog
 import com.codewithfk.foodhub.ui.features.food_item_details.FoodItemCounter
+import com.codewithfk.foodhub.ui.navigation.AddressList
 import com.codewithfk.foodhub.utils.StringUtils
 import kotlinx.coroutines.flow.collectLatest
 
@@ -62,6 +68,10 @@ fun CartScreen(navController: NavController, viewModel: CartViewModel) {
                 is CartViewModel.CartEvent.onQuantityUpdateError,
                 is CartViewModel.CartEvent.showErrorDialog -> {
                     showErrorDialog.value = true
+                }
+
+                is CartViewModel.CartEvent.onAddressClicked -> {
+                    navController.navigate(AddressList)
                 }
 
                 else -> {
@@ -144,6 +154,9 @@ fun CartScreen(navController: NavController, viewModel: CartViewModel) {
 
         Spacer(modifier = Modifier.weight(1f))
         if (uiState.value is CartViewModel.CartUiState.Success) {
+            AddressCard(null, {
+                viewModel.onAddressClicked()
+            })
             Button(onClick = { viewModel.checkout() }, modifier = Modifier.fillMaxWidth()) {
                 Text(text = "Checkout")
             }
@@ -156,6 +169,38 @@ fun CartScreen(navController: NavController, viewModel: CartViewModel) {
             BasicDialog(title = viewModel.errorTitle, description = viewModel.errorMessage) {
                 showErrorDialog.value = false
             }
+        }
+    }
+
+}
+
+@Composable
+fun AddressCard(address: Address?, onAddressClicked: () -> Unit) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp)
+            .shadow(8.dp)
+            .clip(
+                RoundedCornerShape(8.dp)
+            )
+            .background(Color.White)
+            .clickable { onAddressClicked.invoke() }
+            .padding(16.dp)
+
+    ) {
+        if (address != null) {
+            Column {
+                Text(text = address.addressLine1, style = MaterialTheme.typography.titleMedium)
+                Spacer(modifier = Modifier.size(4.dp))
+                Text(
+                    text = "${address.city}, ${address.state}, ${address.country}",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color.Gray
+                )
+            }
+        } else {
+            Text(text = "Select Address", style = MaterialTheme.typography.bodyMedium)
         }
     }
 

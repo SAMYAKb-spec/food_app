@@ -118,6 +118,12 @@ class CartViewModel @Inject constructor(val foodApi: FoodApi) : ViewModel() {
 
     }
 
+    fun onAddressClicked() {
+        viewModelScope.launch {
+            _event.emit(CartEvent.onAddressClicked)
+        }
+    }
+
     sealed class CartUiState {
         object Nothing : CartUiState()
         object Loading : CartUiState()
@@ -130,5 +136,6 @@ class CartViewModel @Inject constructor(val foodApi: FoodApi) : ViewModel() {
         object OnCheckout : CartEvent()
         object onQuantityUpdateError : CartEvent()
         object onItemRemoveError : CartEvent()
+        object onAddressClicked : CartEvent()
     }
 }

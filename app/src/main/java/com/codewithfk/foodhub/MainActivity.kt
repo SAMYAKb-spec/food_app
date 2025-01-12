@@ -54,6 +54,8 @@ import androidx.navigation.toRoute
 import com.codewithfk.foodhub.data.FoodApi
 import com.codewithfk.foodhub.data.FoodHubSession
 import com.codewithfk.foodhub.data.models.FoodItem
+import com.codewithfk.foodhub.ui.features.add_address.AddAddressScreen
+import com.codewithfk.foodhub.ui.features.address_list.AddressListScreen
 import com.codewithfk.foodhub.ui.features.auth.AuthScreen
 import com.codewithfk.foodhub.ui.features.auth.login.SignInScreen
 import com.codewithfk.foodhub.ui.features.auth.signup.SignUpScreen
@@ -62,6 +64,8 @@ import com.codewithfk.foodhub.ui.features.cart.CartViewModel
 import com.codewithfk.foodhub.ui.features.food_item_details.FoodDetailsScreen
 import com.codewithfk.foodhub.ui.features.home.HomeScreen
 import com.codewithfk.foodhub.ui.features.restaurant_details.RestaurantDetailsScreen
+import com.codewithfk.foodhub.ui.navigation.AddAddress
+import com.codewithfk.foodhub.ui.navigation.AddressList
 import com.codewithfk.foodhub.ui.navigation.AuthScreen
 import com.codewithfk.foodhub.ui.navigation.Cart
 import com.codewithfk.foodhub.ui.navigation.FoodDetails
@@ -276,10 +280,18 @@ class MainActivity : ComponentActivity() {
                                 CartScreen(navController, cartViewModel)
                             }
                             composable<Notification> {
-                                shouldShowBottomNav.value = false
+                                shouldShowBottomNav.value = true
                                 Box {
 
                                 }
+                            }
+                            composable<AddressList> {
+                                shouldShowBottomNav.value = false
+                                AddressListScreen(navController)
+                            }
+                            composable<AddAddress> {
+                                shouldShowBottomNav.value = false
+                                AddAddressScreen(navController)
                             }
                         }
                     }

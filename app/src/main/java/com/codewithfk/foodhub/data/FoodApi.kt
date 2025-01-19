@@ -7,9 +7,13 @@ import com.codewithfk.foodhub.data.models.AddressListResponse
 import com.codewithfk.foodhub.data.models.AuthResponse
 import com.codewithfk.foodhub.data.models.CartResponse
 import com.codewithfk.foodhub.data.models.CategoriesResponse
+import com.codewithfk.foodhub.data.models.ConfirmPaymentRequest
+import com.codewithfk.foodhub.data.models.ConfirmPaymentResponse
 import com.codewithfk.foodhub.data.models.FoodItemResponse
 import com.codewithfk.foodhub.data.models.GenericMsgResponse
 import com.codewithfk.foodhub.data.models.OAuthRequest
+import com.codewithfk.foodhub.data.models.PaymentIntentRequest
+import com.codewithfk.foodhub.data.models.PaymentIntentResponse
 import com.codewithfk.foodhub.data.models.ResturauntsResponse
 import com.codewithfk.foodhub.data.models.ReverseGeoCodeRequest
 import com.codewithfk.foodhub.data.models.SignInRequest
@@ -66,4 +70,13 @@ interface FoodApi {
 
     @POST("/addresses")
     suspend fun storeAddress(@Body address: Address): Response<GenericMsgResponse>
+
+    @POST("/payments/create-intent")
+    suspend fun getPaymentIntent(@Body request: PaymentIntentRequest): Response<PaymentIntentResponse>
+
+    @POST("/payments/confirm/{paymentIntentId}")
+    suspend fun verifyPurchase(
+        @Body request: ConfirmPaymentRequest,
+        @Path("paymentIntentId") paymentIntentId: String
+    ): Response<ConfirmPaymentResponse>
 }

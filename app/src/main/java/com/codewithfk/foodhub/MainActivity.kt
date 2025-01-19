@@ -63,6 +63,7 @@ import com.codewithfk.foodhub.ui.features.cart.CartScreen
 import com.codewithfk.foodhub.ui.features.cart.CartViewModel
 import com.codewithfk.foodhub.ui.features.food_item_details.FoodDetailsScreen
 import com.codewithfk.foodhub.ui.features.home.HomeScreen
+import com.codewithfk.foodhub.ui.features.order_success.OrderSuccess
 import com.codewithfk.foodhub.ui.features.restaurant_details.RestaurantDetailsScreen
 import com.codewithfk.foodhub.ui.navigation.AddAddress
 import com.codewithfk.foodhub.ui.navigation.AddressList
@@ -73,6 +74,7 @@ import com.codewithfk.foodhub.ui.navigation.Home
 import com.codewithfk.foodhub.ui.navigation.Login
 import com.codewithfk.foodhub.ui.navigation.NavRoute
 import com.codewithfk.foodhub.ui.navigation.Notification
+import com.codewithfk.foodhub.ui.navigation.OrderSuccess
 import com.codewithfk.foodhub.ui.navigation.RestaurantDetails
 import com.codewithfk.foodhub.ui.navigation.SignUp
 import com.codewithfk.foodhub.ui.navigation.foodItemNavType
@@ -292,6 +294,11 @@ class MainActivity : ComponentActivity() {
                             composable<AddAddress> {
                                 shouldShowBottomNav.value = false
                                 AddAddressScreen(navController)
+                            }
+                            composable<OrderSuccess> {
+                                shouldShowBottomNav.value = false
+                                val orderID = it.toRoute<OrderSuccess>().orderId
+                                OrderSuccess(orderID, navController)
                             }
                         }
                     }

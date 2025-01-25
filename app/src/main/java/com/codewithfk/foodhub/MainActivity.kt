@@ -63,7 +63,9 @@ import com.codewithfk.foodhub.ui.features.cart.CartScreen
 import com.codewithfk.foodhub.ui.features.cart.CartViewModel
 import com.codewithfk.foodhub.ui.features.food_item_details.FoodDetailsScreen
 import com.codewithfk.foodhub.ui.features.home.HomeScreen
+import com.codewithfk.foodhub.ui.features.order_details.OrderDetailsScreen
 import com.codewithfk.foodhub.ui.features.order_success.OrderSuccess
+import com.codewithfk.foodhub.ui.features.orders.OrderListScreen
 import com.codewithfk.foodhub.ui.features.restaurant_details.RestaurantDetailsScreen
 import com.codewithfk.foodhub.ui.navigation.AddAddress
 import com.codewithfk.foodhub.ui.navigation.AddressList
@@ -74,6 +76,8 @@ import com.codewithfk.foodhub.ui.navigation.Home
 import com.codewithfk.foodhub.ui.navigation.Login
 import com.codewithfk.foodhub.ui.navigation.NavRoute
 import com.codewithfk.foodhub.ui.navigation.Notification
+import com.codewithfk.foodhub.ui.navigation.OrderDetails
+import com.codewithfk.foodhub.ui.navigation.OrderList
 import com.codewithfk.foodhub.ui.navigation.OrderSuccess
 import com.codewithfk.foodhub.ui.navigation.RestaurantDetails
 import com.codewithfk.foodhub.ui.navigation.SignUp
@@ -106,6 +110,11 @@ class MainActivity : ComponentActivity() {
                 com.codewithfk.foodhub.ui.navigation.Notification,
                 R.drawable.ic_notification
             )
+
+        object Orders : BottomNavItem(
+            com.codewithfk.foodhub.ui.navigation.OrderList,
+            R.drawable.ic_orders
+        )
     }
 
     @OptIn(ExperimentalSharedTransitionApi::class)
@@ -152,7 +161,8 @@ class MainActivity : ComponentActivity() {
                 val navItems = listOf(
                     BottomNavItem.Home,
                     BottomNavItem.Cart,
-                    BottomNavItem.Notification
+                    BottomNavItem.Notification,
+                    BottomNavItem.Orders
                 )
                 val navController = rememberNavController()
                 val cartViewModel: CartViewModel = hiltViewModel()
@@ -300,6 +310,17 @@ class MainActivity : ComponentActivity() {
                                 val orderID = it.toRoute<OrderSuccess>().orderId
                                 OrderSuccess(orderID, navController)
                             }
+                            composable<OrderList> {
+                                shouldShowBottomNav.value = true
+                                OrderListScreen(navController)
+                            }
+
+                            composable<OrderDetails>{
+                                shouldShowBottomNav.value = false
+                                val orderID = it.toRoute<OrderDetails>().orderId
+                                OrderDetailsScreen(navController, orderID)
+                            }
+
                         }
                     }
 

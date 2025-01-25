@@ -12,6 +12,8 @@ import com.codewithfk.foodhub.data.models.ConfirmPaymentResponse
 import com.codewithfk.foodhub.data.models.FoodItemResponse
 import com.codewithfk.foodhub.data.models.GenericMsgResponse
 import com.codewithfk.foodhub.data.models.OAuthRequest
+import com.codewithfk.foodhub.data.models.Order
+import com.codewithfk.foodhub.data.models.OrderListResponse
 import com.codewithfk.foodhub.data.models.PaymentIntentRequest
 import com.codewithfk.foodhub.data.models.PaymentIntentResponse
 import com.codewithfk.foodhub.data.models.ResturauntsResponse
@@ -79,4 +81,11 @@ interface FoodApi {
         @Body request: ConfirmPaymentRequest,
         @Path("paymentIntentId") paymentIntentId: String
     ): Response<ConfirmPaymentResponse>
+
+    @GET("/orders")
+    suspend fun getOrders(): Response<OrderListResponse>
+
+    @GET("/orders/{orderId}")
+    suspend fun getOrderDetails(@Path("orderId") orderId: String): Response<Order>
+
 }

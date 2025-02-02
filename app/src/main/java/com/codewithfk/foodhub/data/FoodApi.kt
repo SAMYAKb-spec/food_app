@@ -9,8 +9,10 @@ import com.codewithfk.foodhub.data.models.CartResponse
 import com.codewithfk.foodhub.data.models.CategoriesResponse
 import com.codewithfk.foodhub.data.models.ConfirmPaymentRequest
 import com.codewithfk.foodhub.data.models.ConfirmPaymentResponse
+import com.codewithfk.foodhub.data.models.FCMRequest
 import com.codewithfk.foodhub.data.models.FoodItemResponse
 import com.codewithfk.foodhub.data.models.GenericMsgResponse
+import com.codewithfk.foodhub.data.models.NotificationListResponse
 import com.codewithfk.foodhub.data.models.OAuthRequest
 import com.codewithfk.foodhub.data.models.Order
 import com.codewithfk.foodhub.data.models.OrderListResponse
@@ -27,6 +29,7 @@ import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.PATCH
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -36,8 +39,7 @@ interface FoodApi {
 
     @GET("/restaurants")
     suspend fun getRestaurants(
-        @Query("lat") lat: Double,
-        @Query("lon") lon: Double
+        @Query("lat") lat: Double, @Query("lon") lon: Double
     ): Response<ResturauntsResponse>
 
     @POST("/auth/signup")
@@ -78,8 +80,7 @@ interface FoodApi {
 
     @POST("/payments/confirm/{paymentIntentId}")
     suspend fun verifyPurchase(
-        @Body request: ConfirmPaymentRequest,
-        @Path("paymentIntentId") paymentIntentId: String
+        @Body request: ConfirmPaymentRequest, @Path("paymentIntentId") paymentIntentId: String
     ): Response<ConfirmPaymentResponse>
 
     @GET("/orders")
@@ -87,5 +88,14 @@ interface FoodApi {
 
     @GET("/orders/{orderId}")
     suspend fun getOrderDetails(@Path("orderId") orderId: String): Response<Order>
+
+    @PUT("/notifications/fcm-token")
+    suspend fun updateToken(@Body request: FCMRequest): Response<GenericMsgResponse>
+
+    @POST("/notifications/{id}/read")
+    suspend fun readNotification(@Path("id") id: String): Response<GenericMsgResponse>
+
+    @GET("/notifications")
+    suspend fun getNotifications(): Response<NotificationListResponse>
 
 }

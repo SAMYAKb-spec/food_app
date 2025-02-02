@@ -1,6 +1,7 @@
 package com.codewithfk.foodhub
 
 import android.animation.ObjectAnimator
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -8,6 +9,7 @@ import android.view.animation.OvershootInterpolator
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalSharedTransitionApi
@@ -17,6 +19,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -28,6 +31,8 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.AbsoluteAlignment
@@ -45,6 +50,8 @@ import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -54,6 +61,7 @@ import androidx.navigation.toRoute
 import com.codewithfk.foodhub.data.FoodApi
 import com.codewithfk.foodhub.data.FoodHubSession
 import com.codewithfk.foodhub.data.models.FoodItem
+import com.codewithfk.foodhub.notification.FoodHubMessagingService
 import com.codewithfk.foodhub.ui.features.add_address.AddAddressScreen
 import com.codewithfk.foodhub.ui.features.address_list.AddressListScreen
 import com.codewithfk.foodhub.ui.features.auth.AuthScreen
@@ -63,6 +71,8 @@ import com.codewithfk.foodhub.ui.features.cart.CartScreen
 import com.codewithfk.foodhub.ui.features.cart.CartViewModel
 import com.codewithfk.foodhub.ui.features.food_item_details.FoodDetailsScreen
 import com.codewithfk.foodhub.ui.features.home.HomeScreen
+import com.codewithfk.foodhub.ui.features.notifications.NotificationsList
+import com.codewithfk.foodhub.ui.features.notifications.NotificationsViewModel
 import com.codewithfk.foodhub.ui.features.order_details.OrderDetailsScreen
 import com.codewithfk.foodhub.ui.features.order_success.OrderSuccess
 import com.codewithfk.foodhub.ui.features.orders.OrderListScreen
@@ -88,6 +98,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.reflect.typeOf
@@ -101,6 +112,7 @@ class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var session: FoodHubSession
+    val viewModel by viewModels<HomeViewModel>()
 
     sealed class BottomNavItem(val route: NavRoute, val icon: Int) {
         object Home : BottomNavItem(com.codewithfk.foodhub.ui.navigation.Home, R.drawable.ic_home)
@@ -167,6 +179,18 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 val cartViewModel: CartViewModel = hiltViewModel()
                 val cartItemSize = cartViewModel.cartItemCount.collectAsStateWithLifecycle()
+                val notificationViewModel: NotificationsViewModel = hiltViewModel()
+                val unreadCount = notificationViewModel.unreadCount.collectAsStateWithLifecycle()
+
+                LaunchedEffect(key1 = true) {
+                    viewModel.event.collectLatest {
+                        when (it) {
+                            is HomeViewModel.HomeEvent.NavigateToOrderDetail -> {
+                                navController.navigate(OrderDetails(it.orderID))
+                            }
+                        }
+                    }
+                }
                 Scaffold(modifier = Modifier.fillMaxSize(),
                     bottomBar = {
                         val currentRoute =
@@ -194,21 +218,10 @@ class MainActivity : ComponentActivity() {
                                                 )
 
                                                 if (item.route == Cart && cartItemSize.value > 0) {
-                                                    Box(
-                                                        modifier = Modifier
-                                                            .size(16.dp)
-                                                            .clip(CircleShape)
-                                                            .background(Mustard)
-                                                            .align(Alignment.TopEnd)
-                                                    ) {
-                                                        Text(
-                                                            text = "${cartItemSize.value}",
-                                                            modifier = Modifier
-                                                                .align(Alignment.Center),
-                                                            color = Color.White,
-                                                            style = TextStyle(fontSize = 10.sp)
-                                                        )
-                                                    }
+                                                   ItemCount(cartItemSize.value)
+                                                }
+                                                if(item.route == Notification && unreadCount.value > 0) {
+                                                    ItemCount(unreadCount.value)
                                                 }
                                             }
                                         })
@@ -292,10 +305,10 @@ class MainActivity : ComponentActivity() {
                                 CartScreen(navController, cartViewModel)
                             }
                             composable<Notification> {
-                                shouldShowBottomNav.value = true
-                                Box {
-
-                                }
+                               SideEffect {
+                                   shouldShowBottomNav.value = true
+                               }
+                                NotificationsList(navController, notificationViewModel)
                             }
                             composable<AddressList> {
                                 shouldShowBottomNav.value = false
@@ -315,8 +328,10 @@ class MainActivity : ComponentActivity() {
                                 OrderListScreen(navController)
                             }
 
-                            composable<OrderDetails>{
-                                shouldShowBottomNav.value = false
+                            composable<OrderDetails> {
+                                SideEffect {
+                                    shouldShowBottomNav.value = false
+                                }
                                 val orderID = it.toRoute<OrderDetails>().orderId
                                 OrderDetailsScreen(navController, orderID)
                             }
@@ -334,10 +349,42 @@ class MainActivity : ComponentActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             delay(3000)
             showSplashScreen = false
+            processIntent(intent, viewModel)
+        }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        processIntent(intent, viewModel)
+    }
+
+    private fun processIntent(intent: Intent, viewModel: HomeViewModel) {
+        if (intent.hasExtra(FoodHubMessagingService.ORDER_ID)) {
+            val orderID = intent.getStringExtra(FoodHubMessagingService.ORDER_ID)
+            viewModel.navigateToOrderDetail(orderID!!)
+            intent.removeExtra(FoodHubMessagingService.ORDER_ID)
         }
     }
 }
 
+@Composable
+fun BoxScope.ItemCount(count: Int) {
+    Box(
+        modifier = Modifier
+            .size(16.dp)
+            .clip(CircleShape)
+            .background(Mustard)
+            .align(Alignment.TopEnd)
+    ) {
+        Text(
+            text = "${count}",
+            modifier = Modifier
+                .align(Alignment.Center),
+            color = Color.White,
+            style = TextStyle(fontSize = 10.sp)
+        )
+    }
+}
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     Text(

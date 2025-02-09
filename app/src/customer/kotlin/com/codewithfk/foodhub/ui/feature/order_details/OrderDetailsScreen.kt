@@ -1,4 +1,4 @@
-package com.codewithfk.foodhub.ui.features.order_details
+package com.codewithfk.foodhub.ui.feature.order_details
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable

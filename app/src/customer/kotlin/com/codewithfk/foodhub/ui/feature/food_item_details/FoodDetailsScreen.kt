@@ -1,4 +1,4 @@
-package com.codewithfk.foodhub.ui.features.food_item_details
+package com.codewithfk.foodhub.ui.feature.food_item_details
 
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
@@ -39,14 +39,14 @@ import androidx.navigation.NavController
 import com.codewithfk.foodhub.R
 import com.codewithfk.foodhub.data.models.FoodItem
 import com.codewithfk.foodhub.ui.BasicDialog
-import com.codewithfk.foodhub.ui.features.restaurant_details.RestaurantDetails
-import com.codewithfk.foodhub.ui.features.restaurant_details.RestaurantDetailsHeader
+import com.codewithfk.foodhub.ui.feature.restaurant_details.RestaurantDetails
+import com.codewithfk.foodhub.ui.feature.restaurant_details.RestaurantDetailsHeader
 import com.codewithfk.foodhub.ui.navigation.Cart
 import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(ExperimentalSharedTransitionApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun SharedTransitionScope.FoodDetailsScreen(
+ fun SharedTransitionScope.FoodDetailsScreen(
     navController: NavController,
     foodItem: FoodItem,
     animatedVisibilityScope: AnimatedVisibilityScope,
@@ -90,6 +90,8 @@ fun SharedTransitionScope.FoodDetailsScreen(
                 is FoodDetailsViewModel.FoodDetailsEvent.goToCart -> {
                     navController.navigate(Cart)
                 }
+
+                else -> {}
             }
         }
     }

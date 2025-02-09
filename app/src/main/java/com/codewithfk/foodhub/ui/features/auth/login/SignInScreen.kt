@@ -64,7 +64,11 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SignInScreen(navController: NavController, viewModel: SignInViewModel = hiltViewModel()) {
+fun SignInScreen(
+    navController: NavController,
+    isCutomer: Boolean = true,
+    viewModel: SignInViewModel = hiltViewModel()
+) {
     val email = viewModel.email.collectAsStateWithLifecycle()
     val password = viewModel.password.collectAsStateWithLifecycle()
     val errorMessage = remember { mutableStateOf<String?>(null) }
@@ -198,21 +202,23 @@ fun SignInScreen(navController: NavController, viewModel: SignInViewModel = hilt
                 }
             }
             Spacer(modifier = Modifier.size(16.dp))
-            Text(
-                text = stringResource(id = R.string.dont_have_account),
-                modifier = Modifier
-                    .padding(8.dp)
-                    .clickable {
-                        viewModel.onSignUpClicked()
-                    }
-                    .fillMaxWidth(),
-                textAlign = TextAlign.Center
-            )
-            val context = LocalContext.current
-            GroupSocialButtons(
-                color = Color.Black,
-                viewModel = viewModel,
-            )
+            if(isCutomer) {
+                Text(
+                    text = stringResource(id = R.string.dont_have_account),
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .clickable {
+                            viewModel.onSignUpClicked()
+                        }
+                        .fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
+                val context = LocalContext.current
+                GroupSocialButtons(
+                    color = Color.Black,
+                    viewModel = viewModel,
+                )
+            }
         }
     }
     if (showDialog) {

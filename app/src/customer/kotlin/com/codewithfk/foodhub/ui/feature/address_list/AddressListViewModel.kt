@@ -1,4 +1,4 @@
-package com.codewithfk.foodhub.ui.features.address_list
+package com.codewithfk.foodhub.ui.feature.address_list
 
 import android.view.View
 import androidx.lifecycle.ViewModel

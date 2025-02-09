@@ -1,4 +1,4 @@
-package com.codewithfk.foodhub.ui.features.cart
+package com.codewithfk.foodhub.ui.feature.cart
 
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
@@ -47,7 +47,7 @@ import com.codewithfk.foodhub.data.models.Address
 import com.codewithfk.foodhub.data.models.CartItem
 import com.codewithfk.foodhub.data.models.CheckoutDetails
 import com.codewithfk.foodhub.ui.BasicDialog
-import com.codewithfk.foodhub.ui.features.food_item_details.FoodItemCounter
+import com.codewithfk.foodhub.ui.feature.food_item_details.FoodItemCounter
 import com.codewithfk.foodhub.ui.navigation.AddressList
 import com.codewithfk.foodhub.ui.navigation.OrderSuccess
 import com.codewithfk.foodhub.utils.StringUtils

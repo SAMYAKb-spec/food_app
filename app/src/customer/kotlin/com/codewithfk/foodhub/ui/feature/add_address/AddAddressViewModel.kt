@@ -1,4 +1,4 @@
-package com.codewithfk.foodhub.ui.features.add_address
+package com.codewithfk.foodhub.ui.feature.add_address
 
 import android.location.Address
 import androidx.lifecycle.ViewModel

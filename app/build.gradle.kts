@@ -44,6 +44,23 @@ android {
     buildFeatures {
         compose = true
     }
+    flavorDimensions += "environment"
+
+    productFlavors {
+        create("customer") {
+            dimension = "environment"
+        }
+        create("restaurant") {
+            dimension = "environment"
+            applicationIdSuffix = ".restaurant"
+            resValue("string", "app_name", "FH Restaurant")
+        }
+        create("rider") {
+            dimension = "environment"
+            applicationIdSuffix = ".rider"
+            resValue("string", "app_name", "FH Rider")
+        }
+    }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
     }
@@ -74,19 +91,19 @@ dependencies {
     implementation(libs.core.splashscreen)
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
-    implementation (libs.retrofit)
-    implementation (libs.converter.gson)
-    implementation (libs.logging.interceptor)
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.logging.interceptor)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.lifecycle.runtime.compose)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
 
-    implementation ("androidx.credentials:credentials:1.3.0")
-    implementation ("androidx.credentials:credentials-play-services-auth:1.3.0")
-    implementation ("com.google.android.libraries.identity.googleid:googleid:1.1.1")
+    implementation("androidx.credentials:credentials:1.3.0")
+    implementation("androidx.credentials:credentials-play-services-auth:1.3.0")
+    implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
 
-    implementation ("com.facebook.android:facebook-login:17.0.0")
+    implementation("com.facebook.android:facebook-login:17.0.0")
     implementation("io.coil-kt.coil3:coil-compose:3.0.4")
     implementation("io.coil-kt.coil3:coil-network-okhttp:3.0.4")
     implementation("com.google.maps.android:maps-compose:6.1.1")

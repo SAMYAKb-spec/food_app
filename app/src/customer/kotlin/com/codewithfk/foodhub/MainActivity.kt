@@ -35,7 +35,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.AbsoluteAlignment
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
@@ -50,8 +49,6 @@ import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -60,28 +57,23 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.codewithfk.foodhub.data.FoodApi
 import com.codewithfk.foodhub.data.FoodHubSession
-import com.codewithfk.foodhub.data.models.FoodItem
 import com.codewithfk.foodhub.notification.FoodHubMessagingService
-import com.codewithfk.foodhub.ui.features.add_address.AddAddressScreen
-import com.codewithfk.foodhub.ui.features.address_list.AddressListScreen
+import com.codewithfk.foodhub.ui.feature.add_address.AddAddressScreen
+import com.codewithfk.foodhub.ui.feature.address_list.AddressListScreen
 import com.codewithfk.foodhub.ui.features.auth.AuthScreen
 import com.codewithfk.foodhub.ui.features.auth.login.SignInScreen
 import com.codewithfk.foodhub.ui.features.auth.signup.SignUpScreen
-import com.codewithfk.foodhub.ui.features.cart.CartScreen
-import com.codewithfk.foodhub.ui.features.cart.CartViewModel
-import com.codewithfk.foodhub.ui.features.food_item_details.FoodDetailsScreen
-import com.codewithfk.foodhub.ui.features.home.HomeScreen
+import com.codewithfk.foodhub.ui.feature.cart.CartViewModel
+import com.codewithfk.foodhub.ui.feature.home.HomeScreen
 import com.codewithfk.foodhub.ui.features.notifications.NotificationsList
 import com.codewithfk.foodhub.ui.features.notifications.NotificationsViewModel
-import com.codewithfk.foodhub.ui.features.order_details.OrderDetailsScreen
-import com.codewithfk.foodhub.ui.features.order_success.OrderSuccess
+import com.codewithfk.foodhub.ui.feature.order_details.OrderDetailsScreen
+import com.codewithfk.foodhub.ui.feature.order_success.OrderSuccess
 import com.codewithfk.foodhub.ui.features.orders.OrderListScreen
-import com.codewithfk.foodhub.ui.features.restaurant_details.RestaurantDetailsScreen
 import com.codewithfk.foodhub.ui.navigation.AddAddress
 import com.codewithfk.foodhub.ui.navigation.AddressList
 import com.codewithfk.foodhub.ui.navigation.AuthScreen
 import com.codewithfk.foodhub.ui.navigation.Cart
-import com.codewithfk.foodhub.ui.navigation.FoodDetails
 import com.codewithfk.foodhub.ui.navigation.Home
 import com.codewithfk.foodhub.ui.navigation.Login
 import com.codewithfk.foodhub.ui.navigation.NavRoute
@@ -89,9 +81,7 @@ import com.codewithfk.foodhub.ui.navigation.Notification
 import com.codewithfk.foodhub.ui.navigation.OrderDetails
 import com.codewithfk.foodhub.ui.navigation.OrderList
 import com.codewithfk.foodhub.ui.navigation.OrderSuccess
-import com.codewithfk.foodhub.ui.navigation.RestaurantDetails
 import com.codewithfk.foodhub.ui.navigation.SignUp
-import com.codewithfk.foodhub.ui.navigation.foodItemNavType
 import com.codewithfk.foodhub.ui.theme.FoodHubAndroidTheme
 import com.codewithfk.foodhub.ui.theme.Mustard
 import dagger.hilt.android.AndroidEntryPoint
@@ -101,7 +91,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.reflect.typeOf
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -275,34 +264,6 @@ class MainActivity : ComponentActivity() {
                             composable<Home> {
                                 shouldShowBottomNav.value = true
                                 HomeScreen(navController, this)
-                            }
-                            composable<RestaurantDetails> {
-                                shouldShowBottomNav.value = false
-                                val route = it.toRoute<RestaurantDetails>()
-                                RestaurantDetailsScreen(
-                                    navController,
-                                    name = route.restaurantName,
-                                    imageUrl = route.restaurantImageUrl,
-                                    restaurantID = route.restaurantId,
-                                    this
-                                )
-                            }
-                            composable<FoodDetails>(
-                                typeMap = mapOf(typeOf<FoodItem>() to foodItemNavType)
-                            ) {
-                                shouldShowBottomNav.value = false
-                                val route = it.toRoute<FoodDetails>()
-                                FoodDetailsScreen(
-                                    navController,
-                                    foodItem = route.foodItem,
-                                    this,
-                                    onItemAddedToCart = { cartViewModel.getCart() }
-                                )
-                            }
-
-                            composable<Cart>() {
-                                shouldShowBottomNav.value = true
-                                CartScreen(navController, cartViewModel)
                             }
                             composable<Notification> {
                                SideEffect {

@@ -1,4 +1,4 @@
-package com.codewithfk.foodhub.ui.features.address_list
+package com.codewithfk.foodhub.ui.feature.address_list
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -32,7 +32,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.codewithfk.foodhub.R
-import com.codewithfk.foodhub.ui.features.cart.AddressCard
+import com.codewithfk.foodhub.ui.feature.cart.AddressCard
 import com.codewithfk.foodhub.ui.navigation.AddAddress
 import kotlinx.coroutines.flow.collectLatest
 

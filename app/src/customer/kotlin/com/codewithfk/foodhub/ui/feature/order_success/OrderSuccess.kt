@@ -1,4 +1,4 @@
-package com.codewithfk.foodhub.ui.features.order_success
+package com.codewithfk.foodhub.ui.feature.order_success
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column

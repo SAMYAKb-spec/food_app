@@ -1,4 +1,4 @@
-package com.codewithfk.foodhub.ui.features.add_address
+package com.codewithfk.foodhub.ui.feature.add_address
 
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -34,7 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import com.codewithfk.foodhub.ui.features.cart.AddressCard
+import com.codewithfk.foodhub.ui.feature.cart.AddressCard
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap

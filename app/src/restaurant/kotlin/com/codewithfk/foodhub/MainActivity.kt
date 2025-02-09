@@ -77,11 +77,12 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class MainActivity : BaseFoodHubActivity() {
     var showSplashScreen = true
 
     @Inject
@@ -155,8 +156,15 @@ class MainActivity : ComponentActivity() {
                 val unreadCount = notificationViewModel.unreadCount.collectAsStateWithLifecycle()
 
                 LaunchedEffect(key1 = true) {
-
+                    viewModel.event.collectLatest {
+                        when (it) {
+                            is HomeViewModel.HomeEvent.NavigateToOrderDetail -> {
+                                navController.navigate(OrderDetails(it.orderID))
+                            }
+                        }
+                    }
                 }
+                
                 Scaffold(modifier = Modifier.fillMaxSize(),
                     bottomBar = {
                         val currentRoute =
@@ -243,6 +251,7 @@ class MainActivity : ComponentActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             delay(3000)
             showSplashScreen = false
+            processIntent(intent, viewModel)
         }
     }
 }

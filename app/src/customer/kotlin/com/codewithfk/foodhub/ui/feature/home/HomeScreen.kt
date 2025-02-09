@@ -46,7 +46,7 @@ import com.codewithfk.foodhub.R
 import com.codewithfk.foodhub.data.models.Category
 import com.codewithfk.foodhub.data.models.Restaurant
 import com.codewithfk.foodhub.ui.navigation.RestaurantDetails
-import com.codewithfk.foodhub.ui.theme.Orange
+import com.codewithfk.foodhub.ui.theme.Primary
 import com.codewithfk.foodhub.ui.theme.Typography
 import kotlinx.coroutines.flow.collectLatest
 
@@ -278,8 +278,8 @@ fun CategoryItem(category: Category, onCategorySelected: (Category) -> Unit) {
                 .shadow(
                     elevation = 16.dp,
                     shape = CircleShape,
-                    ambientColor = Orange,
-                    spotColor = Orange
+                    ambientColor = Primary,
+                    spotColor = Primary
                 )
                 .clip(CircleShape),
             contentScale = androidx.compose.ui.layout.ContentScale.Inside

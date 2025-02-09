@@ -1,6 +1,5 @@
 package com.codewithfk.foodhub.ui.features.auth.login
 
-import androidx.activity.ComponentActivity
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -49,7 +48,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.codewithfk.foodhub.MainActivity
 import com.codewithfk.foodhub.R
 import com.codewithfk.foodhub.ui.BasicDialog
 import com.codewithfk.foodhub.ui.FoodHubTextField
@@ -57,7 +55,7 @@ import com.codewithfk.foodhub.ui.GroupSocialButtons
 import com.codewithfk.foodhub.ui.navigation.AuthScreen
 import com.codewithfk.foodhub.ui.navigation.Home
 import com.codewithfk.foodhub.ui.navigation.SignUp
-import com.codewithfk.foodhub.ui.theme.Orange
+import com.codewithfk.foodhub.ui.theme.Primary
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -172,7 +170,7 @@ fun SignInScreen(
             Text(text = errorMessage.value ?: "", color = Color.Red)
             Button(
                 onClick = viewModel::onSignInClick, modifier = Modifier.height(48.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Orange)
+                colors = ButtonDefaults.buttonColors(containerColor = Primary)
             ) {
                 Box {
                     AnimatedContent(targetState = loading.value,

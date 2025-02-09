@@ -3,16 +3,13 @@ package com.codewithfk.foodhub.ui.features.auth
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -47,11 +44,10 @@ import androidx.navigation.compose.rememberNavController
 import com.codewithfk.foodhub.R
 import com.codewithfk.foodhub.ui.BasicDialog
 import com.codewithfk.foodhub.ui.GroupSocialButtons
-import com.codewithfk.foodhub.ui.features.auth.signup.SignUpViewModel
 import com.codewithfk.foodhub.ui.navigation.Home
 import com.codewithfk.foodhub.ui.navigation.Login
 import com.codewithfk.foodhub.ui.navigation.SignUp
-import com.codewithfk.foodhub.ui.theme.Orange
+import com.codewithfk.foodhub.ui.theme.Primary
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -124,7 +120,7 @@ fun AuthScreen(
                 )
                 .padding(8.dp)
         ) {
-            Text(text = stringResource(id = R.string.skip), color = Orange)
+            Text(text = stringResource(id = R.string.skip), color = Primary)
         }
 
         Column(
@@ -142,7 +138,7 @@ fun AuthScreen(
             )
             Text(
                 text = stringResource(id = R.string.food_hub),
-                color = Orange,
+                color = Primary,
                 modifier = Modifier,
                 fontSize = 50.sp,
                 fontWeight = androidx.compose.ui.text.font.FontWeight.Bold

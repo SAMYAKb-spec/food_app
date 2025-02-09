@@ -18,6 +18,7 @@ import com.codewithfk.foodhub.data.models.Order
 import com.codewithfk.foodhub.data.models.OrderListResponse
 import com.codewithfk.foodhub.data.models.PaymentIntentRequest
 import com.codewithfk.foodhub.data.models.PaymentIntentResponse
+import com.codewithfk.foodhub.data.models.Restaurant
 import com.codewithfk.foodhub.data.models.ResturauntsResponse
 import com.codewithfk.foodhub.data.models.ReverseGeoCodeRequest
 import com.codewithfk.foodhub.data.models.SignInRequest
@@ -97,5 +98,18 @@ interface FoodApi {
 
     @GET("/notifications")
     suspend fun getNotifications(): Response<NotificationListResponse>
+
+    // add restaurant endpoints
+    @GET("/restaurant-owner/profile")
+    suspend fun getRestaurantProfile(): Response<Restaurant>
+
+    @GET("/restaurant-owner/orders")
+    suspend fun getRestaurantOrders(@Query("status") status: String): Response<OrderListResponse>
+
+    @PATCH("orders/{orderId}/status")
+    suspend fun updateOrderStatus(
+        @Path("orderId") orderId: String,
+        @Body map: Map<String, String>
+    ): Response<GenericMsgResponse>
 
 }

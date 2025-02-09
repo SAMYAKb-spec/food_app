@@ -49,9 +49,14 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.codewithfk.foodhub.data.FoodApi
 import com.codewithfk.foodhub.data.FoodHubSession
+import com.codewithfk.foodhub.data.models.Order
 import com.codewithfk.foodhub.ui.FoodHubNavHost
+import com.codewithfk.foodhub.ui.feature.home.HomeScreen
+import com.codewithfk.foodhub.ui.feature.order_details.OrderDetailsScreen
+import com.codewithfk.foodhub.ui.feature.order_list.OrderListScreen
 import com.codewithfk.foodhub.ui.features.auth.AuthScreen
 import com.codewithfk.foodhub.ui.features.auth.login.SignInScreen
 import com.codewithfk.foodhub.ui.features.auth.signup.SignUpScreen
@@ -62,6 +67,9 @@ import com.codewithfk.foodhub.ui.navigation.Home
 import com.codewithfk.foodhub.ui.navigation.Login
 import com.codewithfk.foodhub.ui.navigation.NavRoute
 import com.codewithfk.foodhub.ui.navigation.Notification
+import com.codewithfk.foodhub.ui.navigation.OrderDetails
+import com.codewithfk.foodhub.ui.navigation.OrderList
+import com.codewithfk.foodhub.ui.navigation.OrderSuccess
 import com.codewithfk.foodhub.ui.navigation.SignUp
 import com.codewithfk.foodhub.ui.theme.FoodHubAndroidTheme
 import com.codewithfk.foodhub.ui.theme.Mustard
@@ -201,17 +209,26 @@ class MainActivity : ComponentActivity() {
                             }
                             composable<Login> {
                                 shouldShowBottomNav.value = false
-                                SignInScreen(navController,false)
+                                SignInScreen(navController, false)
                             }
                             composable<Home> {
                                 shouldShowBottomNav.value = true
-                                RestrauntHomeScreen(navController, this)
+                                HomeScreen(navController)
                             }
                             composable<Notification> {
                                 SideEffect {
                                     shouldShowBottomNav.value = true
                                 }
                                 NotificationsList(navController, notificationViewModel)
+                            }
+                            composable<OrderList> {
+                                shouldShowBottomNav.value = true
+                                OrderListScreen(navController)
+                            }
+                            composable<OrderDetails> {
+                                shouldShowBottomNav.value = true
+                                val orderID = it.toRoute<OrderDetails>().orderId
+                                OrderDetailsScreen(orderID, navController)
                             }
                         }
                     }
@@ -227,16 +244,6 @@ class MainActivity : ComponentActivity() {
             delay(3000)
             showSplashScreen = false
         }
-    }
-}
-
-@Composable
-fun RestrauntHomeScreen(
-    navController: NavHostController,
-    animatedContentScope: AnimatedContentScope
-) {
-    Box(modifier = Modifier.fillMaxSize()) {
-        Text(text = "Home")
     }
 }
 

@@ -3,6 +3,7 @@ package com.codewithfk.foodhub.ui.feature.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.codewithfk.foodhub.data.FoodApi
+import com.codewithfk.foodhub.data.FoodHubSession
 import com.codewithfk.foodhub.data.models.Restaurant
 import com.codewithfk.foodhub.data.remote.ApiResponse
 import com.codewithfk.foodhub.data.remote.safeApiCall
@@ -13,7 +14,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(val foodApi: FoodApi) : ViewModel() {
+class HomeViewModel @Inject constructor(val foodApi: FoodApi, val session: FoodHubSession) :
+    ViewModel() {
 
     private val _uiState = MutableStateFlow<HomeScreenState>(HomeScreenState.Loading)
     val uiState = _uiState.asStateFlow()
@@ -29,6 +31,7 @@ class HomeViewModel @Inject constructor(val foodApi: FoodApi) : ViewModel() {
             when (response) {
                 is ApiResponse.Success -> {
                     _uiState.value = HomeScreenState.Success(response.data)
+                    session.storeRestaurantId(response.data.id)
                 }
 
                 is ApiResponse.Error -> {

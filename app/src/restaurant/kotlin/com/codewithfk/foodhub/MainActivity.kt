@@ -55,6 +55,9 @@ import com.codewithfk.foodhub.data.FoodHubSession
 import com.codewithfk.foodhub.data.models.Order
 import com.codewithfk.foodhub.ui.FoodHubNavHost
 import com.codewithfk.foodhub.ui.feature.home.HomeScreen
+import com.codewithfk.foodhub.ui.feature.menu.add.AddMenuItemScreen
+import com.codewithfk.foodhub.ui.feature.menu.image.ImagePickerScreen
+import com.codewithfk.foodhub.ui.feature.menu.list.ListMenuItemsScreen
 import com.codewithfk.foodhub.ui.feature.order_details.OrderDetailsScreen
 import com.codewithfk.foodhub.ui.feature.order_list.OrderListScreen
 import com.codewithfk.foodhub.ui.features.auth.AuthScreen
@@ -62,9 +65,12 @@ import com.codewithfk.foodhub.ui.features.auth.login.SignInScreen
 import com.codewithfk.foodhub.ui.features.auth.signup.SignUpScreen
 import com.codewithfk.foodhub.ui.features.notifications.NotificationsList
 import com.codewithfk.foodhub.ui.features.notifications.NotificationsViewModel
+import com.codewithfk.foodhub.ui.navigation.AddMenu
 import com.codewithfk.foodhub.ui.navigation.AuthScreen
 import com.codewithfk.foodhub.ui.navigation.Home
+import com.codewithfk.foodhub.ui.navigation.ImagePicker
 import com.codewithfk.foodhub.ui.navigation.Login
+import com.codewithfk.foodhub.ui.navigation.MenuList
 import com.codewithfk.foodhub.ui.navigation.NavRoute
 import com.codewithfk.foodhub.ui.navigation.Notification
 import com.codewithfk.foodhub.ui.navigation.OrderDetails
@@ -102,6 +108,11 @@ class MainActivity : BaseFoodHubActivity() {
         object Orders : BottomNavItem(
             com.codewithfk.foodhub.ui.navigation.OrderList,
             R.drawable.ic_orders
+        )
+
+        object Menu : BottomNavItem(
+            com.codewithfk.foodhub.ui.navigation.MenuList,
+            android.R.drawable.ic_menu_more
         )
     }
 
@@ -149,7 +160,8 @@ class MainActivity : BaseFoodHubActivity() {
                 val navItems = listOf(
                     BottomNavItem.Home,
                     BottomNavItem.Notification,
-                    BottomNavItem.Orders
+                    BottomNavItem.Orders,
+                    BottomNavItem.Menu
                 )
                 val navController = rememberNavController()
                 val notificationViewModel: NotificationsViewModel = hiltViewModel()
@@ -164,7 +176,7 @@ class MainActivity : BaseFoodHubActivity() {
                         }
                     }
                 }
-                
+
                 Scaffold(modifier = Modifier.fillMaxSize(),
                     bottomBar = {
                         val currentRoute =
@@ -234,9 +246,21 @@ class MainActivity : BaseFoodHubActivity() {
                                 OrderListScreen(navController)
                             }
                             composable<OrderDetails> {
-                                shouldShowBottomNav.value = true
+                                shouldShowBottomNav.value = false
                                 val orderID = it.toRoute<OrderDetails>().orderId
                                 OrderDetailsScreen(orderID, navController)
+                            }
+                            composable<MenuList> {
+                                shouldShowBottomNav.value = true
+                                ListMenuItemsScreen(navController, this)
+                            }
+                            composable<AddMenu> {
+                                shouldShowBottomNav.value = false
+                                AddMenuItemScreen(navController)
+                            }
+                            composable<ImagePicker> {
+                                shouldShowBottomNav.value = false
+                                ImagePickerScreen(navController)
                             }
                         }
                     }

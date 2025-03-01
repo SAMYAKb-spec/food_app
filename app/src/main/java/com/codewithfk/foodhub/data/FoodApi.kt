@@ -10,8 +10,11 @@ import com.codewithfk.foodhub.data.models.CategoriesResponse
 import com.codewithfk.foodhub.data.models.ConfirmPaymentRequest
 import com.codewithfk.foodhub.data.models.ConfirmPaymentResponse
 import com.codewithfk.foodhub.data.models.FCMRequest
+import com.codewithfk.foodhub.data.models.FoodItem
+import com.codewithfk.foodhub.data.models.FoodItemListResponse
 import com.codewithfk.foodhub.data.models.FoodItemResponse
 import com.codewithfk.foodhub.data.models.GenericMsgResponse
+import com.codewithfk.foodhub.data.models.ImageUploadResponse
 import com.codewithfk.foodhub.data.models.NotificationListResponse
 import com.codewithfk.foodhub.data.models.OAuthRequest
 import com.codewithfk.foodhub.data.models.Order
@@ -24,13 +27,16 @@ import com.codewithfk.foodhub.data.models.ReverseGeoCodeRequest
 import com.codewithfk.foodhub.data.models.SignInRequest
 import com.codewithfk.foodhub.data.models.SignUpRequest
 import com.codewithfk.foodhub.data.models.UpdateCartItemRequest
+import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Multipart
 import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.PUT
+import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -111,5 +117,18 @@ interface FoodApi {
         @Path("orderId") orderId: String,
         @Body map: Map<String, String>
     ): Response<GenericMsgResponse>
+
+    @GET("/restaurants/{id}/menu")
+    suspend fun getRestaurantMenu(@Path("id") restaurantId: String): Response<FoodItemListResponse>
+
+    @POST("/restaurants/{id}/menu")
+    suspend fun addRestaurantMenu(
+        @Path("id") restaurantId: String,
+        @Body foodItem: FoodItem
+    ): Response<GenericMsgResponse>
+
+    @POST("/images/upload")
+    @Multipart
+    suspend fun uploadImage(@Part image: MultipartBody.Part): Response<ImageUploadResponse>
 
 }

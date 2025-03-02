@@ -3,16 +3,13 @@ package com.codewithfk.foodhub.ui.features.auth
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -47,17 +44,20 @@ import androidx.navigation.compose.rememberNavController
 import com.codewithfk.foodhub.R
 import com.codewithfk.foodhub.ui.BasicDialog
 import com.codewithfk.foodhub.ui.GroupSocialButtons
-import com.codewithfk.foodhub.ui.features.auth.signup.SignUpViewModel
 import com.codewithfk.foodhub.ui.navigation.Home
 import com.codewithfk.foodhub.ui.navigation.Login
 import com.codewithfk.foodhub.ui.navigation.SignUp
-import com.codewithfk.foodhub.ui.theme.Orange
+import com.codewithfk.foodhub.ui.theme.Primary
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AuthScreen(navController: NavController, viewModel: AuthScreenViewModel = hiltViewModel()) {
+fun AuthScreen(
+    navController: NavController,
+    isCustomer: Boolean = true,
+    viewModel: AuthScreenViewModel = hiltViewModel()
+) {
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
     var showDialog by remember { mutableStateOf(false) }
@@ -120,7 +120,7 @@ fun AuthScreen(navController: NavController, viewModel: AuthScreenViewModel = hi
                 )
                 .padding(8.dp)
         ) {
-            Text(text = stringResource(id = R.string.skip), color = Orange)
+            Text(text = stringResource(id = R.string.skip), color = Primary)
         }
 
         Column(
@@ -138,7 +138,7 @@ fun AuthScreen(navController: NavController, viewModel: AuthScreenViewModel = hi
             )
             Text(
                 text = stringResource(id = R.string.food_hub),
-                color = Orange,
+                color = Primary,
                 modifier = Modifier,
                 fontSize = 50.sp,
                 fontWeight = androidx.compose.ui.text.font.FontWeight.Bold
@@ -159,18 +159,20 @@ fun AuthScreen(navController: NavController, viewModel: AuthScreenViewModel = hi
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            GroupSocialButtons(viewModel = viewModel)
-            Spacer(modifier = Modifier.height(16.dp))
-            Button(
-                onClick = {
-                    navController.navigate(SignUp)
-                },
-                modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(containerColor = Color.Gray.copy(alpha = 0.2f)),
-                shape = RoundedCornerShape(32.dp),
-                border = BorderStroke(1.dp, Color.White)
-            ) {
-                Text(text = stringResource(id = R.string.sign_with_email), color = Color.White)
+            if (isCustomer) {
+                GroupSocialButtons(viewModel = viewModel)
+                Spacer(modifier = Modifier.height(16.dp))
+                Button(
+                    onClick = {
+                        navController.navigate(SignUp)
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.Gray.copy(alpha = 0.2f)),
+                    shape = RoundedCornerShape(32.dp),
+                    border = BorderStroke(1.dp, Color.White)
+                ) {
+                    Text(text = stringResource(id = R.string.sign_with_email), color = Color.White)
+                }
             }
 
             TextButton(onClick = {

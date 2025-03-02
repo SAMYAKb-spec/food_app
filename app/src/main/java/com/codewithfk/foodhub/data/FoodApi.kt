@@ -25,6 +25,7 @@ import com.codewithfk.foodhub.data.models.PaymentIntentResponse
 import com.codewithfk.foodhub.data.models.Restaurant
 import com.codewithfk.foodhub.data.models.ResturauntsResponse
 import com.codewithfk.foodhub.data.models.ReverseGeoCodeRequest
+import com.codewithfk.foodhub.data.models.RiderDeliveryOrderListResponse
 import com.codewithfk.foodhub.data.models.SignInRequest
 import com.codewithfk.foodhub.data.models.SignUpRequest
 import com.codewithfk.foodhub.data.models.UpdateCartItemRequest
@@ -140,5 +141,8 @@ interface FoodApi {
 
     @POST("/rider/deliveries/{orderId}/accept")
     suspend fun acceptDelivery(@Path("orderId") orderId: String): Response<GenericMsgResponse>
+
+    @GET("/rider/deliveries/active")
+    suspend fun getActiveDeliveries(): Response<RiderDeliveryOrderListResponse>
 
 }

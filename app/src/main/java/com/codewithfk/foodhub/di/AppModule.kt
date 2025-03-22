@@ -1,6 +1,11 @@
-package com.codewithfk.foodhub.data
+package com.codewithfk.foodhub.di
 
 import android.content.Context
+import com.codewithfk.foodhub.data.FoodApi
+import com.codewithfk.foodhub.data.FoodHubSession
+import com.codewithfk.foodhub.data.SocketService
+import com.codewithfk.foodhub.data.SocketServiceImpl
+import com.codewithfk.foodhub.location.LocationManager
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import dagger.Module
@@ -15,7 +20,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 @Module
 @InstallIn(SingletonComponent::class)
-object NetworkModule {
+object AppModule {
 
     @Provides
     fun provideClient(session: FoodHubSession, @ApplicationContext context: Context): OkHttpClient {
@@ -55,5 +60,18 @@ object NetworkModule {
     @Provides
     fun provideLocationService(@ApplicationContext context: Context): FusedLocationProviderClient {
         return LocationServices.getFusedLocationProviderClient(context)
+    }
+
+    @Provides
+    fun provideLocationManager(
+        fusedLocationProviderClient: FusedLocationProviderClient,
+        @ApplicationContext context: Context
+    ): LocationManager {
+        return LocationManager(fusedLocationProviderClient, context)
+    }
+
+    @Provides
+    fun provideSocketService(): SocketService {
+        return SocketServiceImpl()
     }
 }

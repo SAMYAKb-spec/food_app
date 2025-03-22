@@ -4,20 +4,31 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.codewithfk.foodhub.data.FoodApi
 import com.codewithfk.foodhub.data.models.Order
+import com.codewithfk.foodhub.data.models.SocketLocation
+import com.codewithfk.foodhub.data.models.SocketLocationResponse
 import com.codewithfk.foodhub.data.remote.ApiResponse
 import com.codewithfk.foodhub.data.remote.safeApiCall
+import com.codewithfk.foodhub.data.repository.LocationUpdateSocketRepository
+import com.codewithfk.foodhub.ui.features.orders.OrderDetailsBaseViewModel
 import com.codewithfk.foodhub.utils.OrdersUtils
+import com.google.maps.android.PolyUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
 
 @HiltViewModel
-class OrderDetailsViewModel @Inject constructor(val foodApi: FoodApi) : ViewModel() {
+class OrderDetailsViewModel @Inject constructor(
+    val foodApi: FoodApi,
+    repository: LocationUpdateSocketRepository
+) : OrderDetailsBaseViewModel(repository) {
 
     val listOfStatus = OrdersUtils.OrderStatus.entries.map { it.name }
 
@@ -34,7 +45,21 @@ class OrderDetailsViewModel @Inject constructor(val foodApi: FoodApi) : ViewMode
             val result = safeApiCall { foodApi.getOrderDetails(orderID) }
             when (result) {
                 is ApiResponse.Success -> {
-                    _uiState.value = OrderDetailsUiState.Success(result.data)
+                    if (result.data.status == OrdersUtils.OrderStatus.OUT_FOR_DELIVERY.name) {
+                        _uiState.value = OrderDetailsUiState.OrderDelivery(result.data)
+                        result.data.riderId?.let {
+                            connectSocket(orderID, it)
+                        }
+                    } else {
+
+                        if (result.data.status == OrdersUtils.OrderStatus.DELIVERED.name
+                            || result.data.status == OrdersUtils.OrderStatus.CANCELLED.name
+                            || result.data.status == OrdersUtils.OrderStatus.REJECTED.name
+                        ) {
+                            disconnectSocket()
+                        }
+                        _uiState.value = OrderDetailsUiState.Success(result.data)
+                    }
                     order = result.data
                 }
 
@@ -69,6 +94,7 @@ class OrderDetailsViewModel @Inject constructor(val foodApi: FoodApi) : ViewMode
     sealed class OrderDetailsUiState {
         object Loading : OrderDetailsUiState()
         data class Success(val order: Order) : OrderDetailsUiState()
+        data class OrderDelivery(val order: Order) : OrderDetailsUiState()
         object Error : OrderDetailsUiState()
     }
 

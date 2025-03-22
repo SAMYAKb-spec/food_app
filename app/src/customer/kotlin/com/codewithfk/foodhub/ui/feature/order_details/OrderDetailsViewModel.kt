@@ -5,6 +5,9 @@ import androidx.lifecycle.viewModelScope
 import com.codewithfk.foodhub.data.FoodApi
 import com.codewithfk.foodhub.data.models.Order
 import com.codewithfk.foodhub.data.remote.safeApiCall
+import com.codewithfk.foodhub.ui.features.orders.LocationUpdateBaseRepository
+import com.codewithfk.foodhub.ui.features.orders.OrderDetailsBaseViewModel
+import com.codewithfk.foodhub.utils.OrdersUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +17,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class OrderDetailsViewModel @Inject constructor(private val foodApi: FoodApi) : ViewModel() {
+class OrderDetailsViewModel @Inject constructor(
+    private val foodApi: FoodApi, repository: LocationUpdateBaseRepository
+) : OrderDetailsBaseViewModel(repository) {
 
     private val _state = MutableStateFlow<OrderDetailsState>(OrderDetailsState.Loading)
     val state get() = _state.asStateFlow()
@@ -30,6 +35,18 @@ class OrderDetailsViewModel @Inject constructor(private val foodApi: FoodApi) : 
             when (result) {
                 is com.codewithfk.foodhub.data.remote.ApiResponse.Success -> {
                     _state.value = OrderDetailsState.OrderDetails(result.data)
+
+                    if (result.data.status == OrdersUtils.OrderStatus.OUT_FOR_DELIVERY.name) {
+                        result.data.riderId?.let {
+                            connectSocket(orderId, it)
+                        }
+                    } else {
+                        if (result.data.status == OrdersUtils.OrderStatus.DELIVERED.name
+                            || result.data.status == OrdersUtils.OrderStatus.CANCELLED.name
+                            || result.data.status == OrdersUtils.OrderStatus.REJECTED.name) {
+                            disconnectSocket()
+                        }
+                    }
                 }
 
                 is com.codewithfk.foodhub.data.remote.ApiResponse.Error -> {

@@ -31,7 +31,9 @@ import com.codewithfk.foodhub.R
 import com.codewithfk.foodhub.ui.features.orders.OrderDetailsText
 import com.codewithfk.foodhub.ui.features.orders.OrderListItem
 import com.codewithfk.foodhub.ui.features.orders.OrderListViewModel
+import com.codewithfk.foodhub.ui.features.orders.order_map.OrderTrackerMapView
 import com.codewithfk.foodhub.ui.navigation.OrderDetails
+import com.codewithfk.foodhub.utils.OrdersUtils
 import com.codewithfk.foodhub.utils.StringUtils
 import kotlinx.coroutines.flow.collectLatest
 
@@ -111,6 +113,10 @@ fun OrderDetailsScreen(
                         modifier = Modifier.size(48.dp)
                     )
                     Text(text = "${order.status}")
+                }
+
+                if (order.status == OrdersUtils.OrderStatus.OUT_FOR_DELIVERY.name) {
+                    OrderTrackerMapView(modifier = Modifier, viewModel = viewModel, order = order)
                 }
             }
 

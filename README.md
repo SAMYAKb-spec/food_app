@@ -67,8 +67,8 @@ Watch the complete playlist: [FoodHub Android Tutorial Series](https://www.youtu
 ## Screenshots
 
 ### Customer App
-| Login Screen | Restaurant List | Restaurant Details | Cart | Orders |
-|------------------|------------------|------------------|------------------|------------------|
+|   Login Screen   | Restaurant List |Restaurant Details|      Cart        |     Orders       |
+|------------------|-----------------|------------------|------------------|------------------|
 | <img src="docs/screenshots/customer_login.png" width="200" height="350" alt="Login Screen"> | <img src="docs/screenshots/customer_restaurant_list.png" width="200" height="350" alt="Restaurant List"> | <img src="docs/screenshots/customer_restaurant_details.png" width="200" height="350" alt="Restaurant Details"> | <img src="docs/screenshots/customer_cart.png" width="200" height="350" alt="Cart"> | <img src="docs/screenshots/customer_orders.png" width="200" height="350" alt="Orders"> |
 
 ### Restaurant App
@@ -77,7 +77,7 @@ Watch the complete playlist: [FoodHub Android Tutorial Series](https://www.youtu
 | <img src="docs/screenshots/restaurant_dashboard.png" width="200" height="350" alt="Dashboard"> | <img src="docs/screenshots/restaurant_menu.png" width="200" height="350" alt="Menu Management"> | <img src="docs/screenshots/restaurant_orders.png" width="200" height="350" alt="Order Processing"> | <img src="docs/screenshots/restaurant_add_menu.png" width="200" height="350" alt="Add Menu"> | <img src="docs/screenshots/restaurant_notification.png" width="200" height="350" alt="Notifications"> |
 
 ### Rider App
-| Order List | Navigation | Order Details |
+|    Order List    |    Navigation    |   Order Details  |
 |------------------|------------------|------------------|
 | <img src="docs/screenshots/rider_orders.png" width="200" height="350" alt="Order List"> | <img src="docs/screenshots/rider_navigation.png" width="200" height="350" alt="Navigation"> | <img src="docs/screenshots/rider_order_details.png" width="200" height="350" alt="Order Details"> |
 

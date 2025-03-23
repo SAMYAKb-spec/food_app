@@ -100,7 +100,7 @@ import kotlinx.coroutines.flow.collectLatest
         horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
     ) {
         RestaurantDetailsHeader(imageUrl = foodItem.imageUrl,
-            restaurantID = foodItem.id,
+            restaurantID = foodItem.id?:"",
             animatedVisibilityScope = animatedVisibilityScope,
             onBackButton = {
                 navController.popBackStack()
@@ -108,7 +108,7 @@ import kotlinx.coroutines.flow.collectLatest
         RestaurantDetails(
             title = foodItem.name,
             description = foodItem.description,
-            restaurantID = foodItem.id,
+            restaurantID = foodItem.id?:"",
             animatedVisibilityScope = animatedVisibilityScope
         )
         Row(
@@ -133,7 +133,7 @@ import kotlinx.coroutines.flow.collectLatest
         Button(
             onClick = {
                 viewModel.addToCart(
-                    restaurantId = foodItem.restaurantId, foodItemId = foodItem.id
+                    restaurantId = foodItem.restaurantId, foodItemId = foodItem.id ?:""
                 )
             }, enabled = !isLoading.value, modifier = Modifier.padding(8.dp)
         ) {

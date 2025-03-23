@@ -9,6 +9,7 @@ import com.codewithfk.foodhub.data.models.CartResponse
 import com.codewithfk.foodhub.data.models.CategoriesResponse
 import com.codewithfk.foodhub.data.models.ConfirmPaymentRequest
 import com.codewithfk.foodhub.data.models.ConfirmPaymentResponse
+import com.codewithfk.foodhub.data.models.DelieveriesListResponse
 import com.codewithfk.foodhub.data.models.FCMRequest
 import com.codewithfk.foodhub.data.models.FoodItem
 import com.codewithfk.foodhub.data.models.FoodItemListResponse
@@ -24,6 +25,7 @@ import com.codewithfk.foodhub.data.models.PaymentIntentResponse
 import com.codewithfk.foodhub.data.models.Restaurant
 import com.codewithfk.foodhub.data.models.ResturauntsResponse
 import com.codewithfk.foodhub.data.models.ReverseGeoCodeRequest
+import com.codewithfk.foodhub.data.models.RiderDeliveryOrderListResponse
 import com.codewithfk.foodhub.data.models.SignInRequest
 import com.codewithfk.foodhub.data.models.SignUpRequest
 import com.codewithfk.foodhub.data.models.UpdateCartItemRequest
@@ -130,5 +132,17 @@ interface FoodApi {
     @POST("/images/upload")
     @Multipart
     suspend fun uploadImage(@Part image: MultipartBody.Part): Response<ImageUploadResponse>
+
+    @GET("/rider/deliveries/available")
+    suspend fun getAvailableDeliveries(): Response<DelieveriesListResponse>
+
+    @POST("/rider/deliveries/{orderId}/reject")
+    suspend fun rejectDelivery(@Path("orderId") orderId: String): Response<GenericMsgResponse>
+
+    @POST("/rider/deliveries/{orderId}/accept")
+    suspend fun acceptDelivery(@Path("orderId") orderId: String): Response<GenericMsgResponse>
+
+    @GET("/rider/deliveries/active")
+    suspend fun getActiveDeliveries(): Response<RiderDeliveryOrderListResponse>
 
 }

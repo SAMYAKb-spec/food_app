@@ -112,6 +112,8 @@ dependencies {
     implementation("com.stripe:stripe-android:20.53.0")
     implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
     implementation("com.google.firebase:firebase-messaging-ktx")
+    implementation("com.google.maps.android:android-maps-utils:3.8.2")
+
 
 }
 kapt {

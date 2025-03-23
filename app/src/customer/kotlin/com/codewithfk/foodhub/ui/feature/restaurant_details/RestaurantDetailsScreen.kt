@@ -51,6 +51,7 @@ import coil3.compose.AsyncImage
 import com.codewithfk.foodhub.R
 import com.codewithfk.foodhub.data.models.FoodItem
 import com.codewithfk.foodhub.data.models.Restaurant
+import com.codewithfk.foodhub.ui.features.common.FoodItemView
 import com.codewithfk.foodhub.ui.gridItems
 import com.codewithfk.foodhub.ui.navigation.FoodDetails
 

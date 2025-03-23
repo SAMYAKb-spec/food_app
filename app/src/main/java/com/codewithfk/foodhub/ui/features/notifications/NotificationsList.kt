@@ -59,10 +59,26 @@ fun NotificationsList(navController: NavController, viewModel: NotificationsView
                 )
                 val notifications =
                     (state.value as NotificationsViewModel.NotificationsState.Success).data
-                LazyColumn {
-                    items(notifications, key = { it.id }) {
-                        NotificationItem(it) {
-                            viewModel.readNotification(it)
+                if (notifications.isEmpty()) {
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            text = "No notifications available",
+                            style = MaterialTheme.typography.titleMedium,
+                            modifier = Modifier
+                                .padding(16.dp)
+                                .fillMaxWidth()
+                        )
+                    }
+                } else {
+                    LazyColumn {
+                        items(notifications, key = { it.id }) {
+                            NotificationItem(it) {
+                                viewModel.readNotification(it)
+                            }
                         }
                     }
                 }

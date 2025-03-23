@@ -67,19 +67,19 @@ Watch the complete playlist: [FoodHub Android Tutorial Series](https://www.youtu
 ## Screenshots
 
 ### Customer App
-| Login Screen | Restaurant List | Restaurant Details | Cart | Orders |
-|--------------|-----------------|-------------------|------|---------|
-| <img src="docs/screenshots/customer_login.png" width="200" height="400" alt="Login Screen"> | <img src="docs/screenshots/customer_restaurant_list.png" width="200" height="400" alt="Restaurant List"> | <img src="docs/screenshots/customer_restaurant_details.png" width="200" height="400" alt="Restaurant Details"> | <img src="docs/screenshots/customer_cart.png" width="200" height="400" alt="Cart"> | <img src="docs/screenshots/customer_orders.png" width="200" height="400" alt="Orders"> |
+| Login Screen                                                                                | Restaurant List | Restaurant Details | Cart | Orders |
+|---------------------------------------------------------------------------------------------|-----------------|-------------------|------|---------|
+| <img src="docs/screenshots/customer_login.png" width="200" height="350" alt="Login Screen"> | <img src="docs/screenshots/customer_restaurant_list.png" width="200" height="350" alt="Restaurant List"> | <img src="docs/screenshots/customer_restaurant_details.png" width="200" height="350" alt="Restaurant Details"> | <img src="docs/screenshots/customer_cart.png" width="200" height="350" alt="Cart"> | <img src="docs/screenshots/customer_orders.png" width="200" height="350" alt="Orders"> |
 
 ### Restaurant App
 | Dashboard | Menu Management | Order Processing | Analytics |
 |-----------|----------------|------------------|-----------|
-| <img src="docs/screenshots/restaurant_dashboard.png" width="200" height="400" alt="Dashboard"> | <img src="docs/screenshots/restaurant_menu.png" width="200" height="400" alt="Menu Management"> | <img src="docs/screenshots/restaurant_orders.png" width="200" height="400" alt="Order Processing"> | <img src="docs/screenshots/restaurant_analytics.png" width="200" height="400" alt="Analytics"> |
+| <img src="docs/screenshots/restaurant_dashboard.png" width="200" height="350" alt="Dashboard"> | <img src="docs/screenshots/restaurant_menu.png" width="200" height="350" alt="Menu Management"> | <img src="docs/screenshots/restaurant_orders.png" width="200" height="350" alt="Order Processing"> | <img src="docs/screenshots/restaurant_analytics.png" width="200" height="350" alt="Analytics"> |
 
 ### Rider App
 | Order List | Navigation | Order Details | Earnings |
 |------------|------------|---------------|----------|
-| <img src="docs/screenshots/rider_orders.png" width="200" height="400" alt="Order List"> | <img src="docs/screenshots/rider_navigation.png" width="200" height="400" alt="Navigation"> | <img src="docs/screenshots/rider_order_details.png" width="200" height="400" alt="Order Details"> | <img src="docs/screenshots/rider_earnings.png" width="200" height="400" alt="Earnings"> |
+| <img src="docs/screenshots/rider_orders.png" width="200" height="350" alt="Order List"> | <img src="docs/screenshots/rider_navigation.png" width="200" height="350" alt="Navigation"> | <img src="docs/screenshots/rider_order_details.png" width="200" height="350" alt="Order Details"> | <img src="docs/screenshots/rider_earnings.png" width="200" height="350" alt="Earnings"> |
 
 *Note: Click on any image to view it in full size. All screenshots are displayed at 200x400 pixels to maintain consistent dimensions.*
 

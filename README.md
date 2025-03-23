@@ -81,8 +81,6 @@ Watch the complete playlist: [FoodHub Android Tutorial Series](https://www.youtu
 |------------|------------|---------------|----------|
 | [Screenshot 9] | [Screenshot 10] | [Screenshot 11] | [Screenshot 12] |
 
-*Note: Replace [Screenshot X] with actual screenshot links once you have them*
-
 ## Project Structure
 
 ```

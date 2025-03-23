@@ -68,18 +68,20 @@ Watch the complete playlist: [FoodHub Android Tutorial Series](https://www.youtu
 
 ### Customer App
 | Login Screen | Restaurant List | Restaurant Details | Cart | Orders |
-|--------------|-----------------|-------------------|------|
-| ![Login Screen](docs/screenshots/customer_login.png) | ![Restaurant List](docs/screenshots/customer_restaurant_list.png) | ![Restaurant Details](docs/screenshots/customer_restaurant_details.png) | ![Cart](docs/screenshots/customer_cart.png) | ![Orders](docs/screenshots/customer_orders.png) |
+|--------------|-----------------|-------------------|------|---------|
+| <img src="docs/screenshots/customer_login.png" width="200" alt="Login Screen"> | <img src="docs/screenshots/customer_restaurant_list.png" width="200" alt="Restaurant List"> | <img src="docs/screenshots/customer_restaurant_details.png" width="200" alt="Restaurant Details"> | <img src="docs/screenshots/customer_cart.png" width="200" alt="Cart"> | <img src="docs/screenshots/customer_orders.png" width="200" alt="Orders"> |
 
 ### Restaurant App
 | Dashboard | Menu Management | Order Processing | Analytics |
 |-----------|----------------|------------------|-----------|
-| ![Dashboard](docs/screenshots/restaurant_dashboard.png) | ![Menu Management](docs/screenshots/restaurant_menu.png) | ![Order Processing](docs/screenshots/restaurant_orders.png) | ![Analytics](docs/screenshots/restaurant_analytics.png) |
+| <img src="docs/screenshots/restaurant_dashboard.png" width="200" alt="Dashboard"> | <img src="docs/screenshots/restaurant_menu.png" width="200" alt="Menu Management"> | <img src="docs/screenshots/restaurant_orders.png" width="200" alt="Order Processing"> | <img src="docs/screenshots/restaurant_analytics.png" width="200" alt="Analytics"> |
 
 ### Rider App
 | Order List | Navigation | Order Details | Earnings |
 |------------|------------|---------------|----------|
-| ![Order List](docs/screenshots/rider_orders.png) | ![Navigation](docs/screenshots/rider_navigation.png) | ![Order Details](docs/screenshots/rider_order_details.png) | ![Earnings](docs/screenshots/rider_earnings.png) |
+| <img src="docs/screenshots/rider_orders.png" width="200" alt="Order List"> | <img src="docs/screenshots/rider_navigation.png" width="200" alt="Navigation"> | <img src="docs/screenshots/rider_order_details.png" width="200" alt="Order Details"> | <img src="docs/screenshots/rider_earnings.png" width="200" alt="Earnings"> |
+
+*Note: Click on any image to view it in full size*
 
 ## Project Structure
 

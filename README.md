@@ -69,17 +69,17 @@ Watch the complete playlist: [FoodHub Android Tutorial Series](https://www.youtu
 ### Customer App
 | Login Screen | Restaurant List | Restaurant Details | Cart |
 |--------------|-----------------|-------------------|------|
-| [Screenshot 1] | [Screenshot 2] | [Screenshot 3] | [Screenshot 4] |
+| ![Login Screen](docs/screenshots/customer_login.png) | ![Restaurant List](docs/screenshots/customer_restaurant_list.png) | ![Restaurant Details](docs/screenshots/customer_restaurant_details.png) | ![Cart](docs/screenshots/customer_cart.png) |
 
 ### Restaurant App
 | Dashboard | Menu Management | Order Processing | Analytics |
 |-----------|----------------|------------------|-----------|
-| [Screenshot 5] | [Screenshot 6] | [Screenshot 7] | [Screenshot 8] |
+| ![Dashboard](docs/screenshots/restaurant_dashboard.png) | ![Menu Management](docs/screenshots/restaurant_menu.png) | ![Order Processing](docs/screenshots/restaurant_orders.png) | ![Analytics](docs/screenshots/restaurant_analytics.png) |
 
 ### Rider App
 | Order List | Navigation | Order Details | Earnings |
 |------------|------------|---------------|----------|
-| [Screenshot 9] | [Screenshot 10] | [Screenshot 11] | [Screenshot 12] |
+| ![Order List](docs/screenshots/rider_orders.png) | ![Navigation](docs/screenshots/rider_navigation.png) | ![Order Details](docs/screenshots/rider_order_details.png) | ![Earnings](docs/screenshots/rider_earnings.png) |
 
 ## Project Structure
 

@@ -67,9 +67,9 @@ Watch the complete playlist: [FoodHub Android Tutorial Series](https://www.youtu
 ## Screenshots
 
 ### Customer App
-| Login Screen | Restaurant List | Restaurant Details | Cart |
+| Login Screen | Restaurant List | Restaurant Details | Cart | Orders |
 |--------------|-----------------|-------------------|------|
-| ![Login Screen](docs/screenshots/customer_login.png) | ![Restaurant List](docs/screenshots/customer_restaurant_list.png) | ![Restaurant Details](docs/screenshots/customer_restaurant_details.png) | ![Cart](docs/screenshots/customer_cart.png) |
+| ![Login Screen](docs/screenshots/customer_login.png) | ![Restaurant List](docs/screenshots/customer_restaurant_list.png) | ![Restaurant Details](docs/screenshots/customer_restaurant_details.png) | ![Cart](docs/screenshots/customer_cart.png) | ![Orders](docs/screenshots/customer_orders.png) |
 
 ### Restaurant App
 | Dashboard | Menu Management | Order Processing | Analytics |

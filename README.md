@@ -81,8 +81,6 @@ Watch the complete playlist: [FoodHub Android Tutorial Series](https://www.youtu
 |------------------|------------------|------------------|
 | <img src="docs/screenshots/rider_orders.png" width="200"  alt="Order List"> | <img src="docs/screenshots/rider_navigation.png" width="200"  alt="Navigation"> | <img src="docs/screenshots/rider_order_details.png" width="200"  alt="Order Details"> |
 
-*Note: Click on any image to view it in full size. All screenshots are displayed at 200x400 pixels to maintain consistent dimensions.*
-
 ## Project Structure
 
 ```

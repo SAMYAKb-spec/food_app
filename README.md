@@ -67,14 +67,14 @@ Watch the complete playlist: [FoodHub Android Tutorial Series](https://www.youtu
 ## Screenshots
 
 ### Customer App
-|   Login Screen   | Restaurant List |Restaurant Details|      Cart        |     Orders       |
-|------------------|-----------------|------------------|------------------|------------------|
-| <img src="docs/screenshots/customer_login.png" width="200"  alt="Login Screen"> | <img src="docs/screenshots/customer_restaurant_list.png" width="200"  alt="Restaurant List"> | <img src="docs/screenshots/customer_restaurant_details.png" width="200"  alt="Restaurant Details"> | <img src="docs/screenshots/customer_cart.png" width="200"  alt="Cart"> | <img src="docs/screenshots/customer_orders.png" width="200"  alt="Orders"> |
+|   Login Screen   | Restaurant List |Restaurant Details|      Cart        |
+|------------------|-----------------|------------------|------------------|
+| <img src="docs/screenshots/customer_login.png" width="200"  alt="Login Screen"> | <img src="docs/screenshots/customer_restaurant_list.png" width="200"  alt="Restaurant List"> | <img src="docs/screenshots/customer_restaurant_details.png" width="200"  alt="Restaurant Details"> | <img src="docs/screenshots/customer_cart.png" width="200"  alt="Cart"> |
 
 ### Restaurant App
-| Dashboard | Menu Management | Order Processing | Add Menu | Notifications |
-|------------------|------------------|------------------|------------------| ------------------|
-| <img src="docs/screenshots/restaurant_dashboard.png" width="200"  alt="Dashboard"> | <img src="docs/screenshots/restaurant_menu.png" width="200"  alt="Menu Management"> | <img src="docs/screenshots/restaurant_orders.png" width="200"  alt="Order Processing"> | <img src="docs/screenshots/restaurant_add_menu.png" width="200"  alt="Add Menu"> | <img src="docs/screenshots/restaurant_notification.png" width="200"  alt="Notifications"> |
+| Dashboard | Menu Management | Order Processing | Add Menu |
+|------------------|------------------|------------------|------------------|
+| <img src="docs/screenshots/restaurant_dashboard.png" width="200"  alt="Dashboard"> | <img src="docs/screenshots/restaurant_menu.png" width="200"  alt="Menu Management"> | <img src="docs/screenshots/restaurant_orders.png" width="200"  alt="Order Processing"> | <img src="docs/screenshots/restaurant_add_menu.png" width="200"  alt="Add Menu"> |
 
 ### Rider App
 |    Order List    |    Navigation    |   Order Details  |

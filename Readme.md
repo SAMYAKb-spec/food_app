@@ -42,28 +42,6 @@ FoodHub is a comprehensive food delivery platform that connects customers, resta
 - **Payment Processing**: Stripe
 - **Location Services**: Google Play Services Location
 - **Serialization**: Kotlinx Serialization
-
-## Tutorial Series
-
-Watch the complete tutorial series on YouTube to learn how to build this FoodHub Android app from scratch:
-
-[![FoodHub Android Tutorial](https://img.youtube.com/vi/4kFqlFEEUus/0.jpg)](https://www.youtube.com/watch?v=4kFqlFEEUus&list=PL0pXjGnY7PORsStPOklvOMPOTXoS1-bkP)
-
-### Tutorial Playlist Contents
-
-1. Project Setup and Architecture
-2. Authentication Implementation
-3. Restaurant Listing and Details
-4. Cart Management
-5. Order Processing
-6. Payment Integration
-7. Real-time Location Tracking
-8. Push Notifications
-9. Restaurant Dashboard
-10. Rider App Features
-
-Watch the complete playlist: [FoodHub Android Tutorial Series](https://www.youtube.com/playlist?list=PL0pXjGnY7PORsStPOklvOMPOTXoS1-bkP)
-
 ## Screenshots
 
 ### Customer App
